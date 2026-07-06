@@ -6,6 +6,7 @@ const footerLinks = {
   guides: [
     { href: "/blog", label: "All Guides" },
     { href: "/category/teen-patti-apks", label: "Teen Patti APKs" },
+    { href: "/category/new-earning-games", label: "New Earning Games" },
   ],
   company: [
     { href: "/about-us", label: "About Us" },

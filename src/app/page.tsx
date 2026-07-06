@@ -1,8 +1,8 @@
 import Link from "next/link";
 import SiteLayout from "@/components/SiteLayout";
-import PostCard from "@/components/PostCard";
+import PostColumn from "@/components/PostColumn";
 import SiteInfoTable from "@/components/SiteInfoTable";
-import { getPosts } from "@/lib/wordpress";
+import { getCategoryBySlug, getPostsByCategory } from "@/lib/wordpress";
 
 export const revalidate = 3600;
 
@@ -40,11 +40,27 @@ const stats = [
 ];
 
 export default async function HomePage() {
-  let posts: Awaited<ReturnType<typeof getPosts>> = [];
+  let teenPattiPosts: Awaited<ReturnType<typeof getPostsByCategory>> = [];
+  let earningGamesPosts: Awaited<ReturnType<typeof getPostsByCategory>> = [];
   let wpConnected = true;
 
   try {
-    posts = await getPosts({ per_page: 6 });
+    const [teenPattiCategory, earningGamesCategory] = await Promise.all([
+      getCategoryBySlug("teen-patti-apks"),
+      getCategoryBySlug("new-earning-games"),
+    ]);
+
+    const [teenPatti, earningGames] = await Promise.all([
+      teenPattiCategory
+        ? getPostsByCategory(teenPattiCategory.id)
+        : Promise.resolve([]),
+      earningGamesCategory
+        ? getPostsByCategory(earningGamesCategory.id)
+        : Promise.resolve([]),
+    ]);
+
+    teenPattiPosts = teenPatti.slice(0, 6);
+    earningGamesPosts = earningGames.slice(0, 6);
   } catch {
     wpConnected = false;
   }
@@ -88,7 +104,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Teen Patti APKs — posts grid */}
+      {/* Posts — two columns */}
       <section className="border-b border-zinc-800/80 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           {!wpConnected ? (
@@ -98,32 +114,21 @@ export default async function HomePage() {
                 New articles are published regularly. Check back shortly.
               </p>
             </div>
-          ) : posts.length === 0 ? (
-            <p className="text-center text-zinc-500">New guides coming soon.</p>
           ) : (
-            <>
-              <div className="mb-10 flex items-end justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold text-white sm:text-3xl">
-                    Teen Patti APKs
-                  </h2>
-                  <p className="mt-2 text-zinc-400">
-                    Fresh APK downloads, earning tips, and game reviews
-                  </p>
-                </div>
-                <Link
-                  href="/blog"
-                  className="text-sm font-semibold text-emerald-400 hover:text-emerald-300"
-                >
-                  View all →
-                </Link>
-              </div>
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {posts.map((post) => (
-                  <PostCard key={post.id} post={post} />
-                ))}
-              </div>
-            </>
+            <div className="grid gap-12 lg:grid-cols-2 lg:gap-10">
+              <PostColumn
+                title="Teen Patti APKs"
+                description="Fresh APK downloads, earning tips, and game reviews"
+                categorySlug="teen-patti-apks"
+                posts={teenPattiPosts}
+              />
+              <PostColumn
+                title="New Earning Games"
+                description="Latest Pakistani earning apps and play-to-earn guides"
+                categorySlug="new-earning-games"
+                posts={earningGamesPosts}
+              />
+            </div>
           )}
         </div>
       </section>
