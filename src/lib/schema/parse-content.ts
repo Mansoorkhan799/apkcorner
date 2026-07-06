@@ -17,6 +17,14 @@ function cleanText(text: string): string {
   return text.replace(/\s+/g, " ").trim();
 }
 
+/** Remove the first H1 from HTML when title is shown separately in the post hero. */
+export function stripLeadingH1(html: string): string {
+  const $ = cheerio.load(html, null, false);
+  const firstH1 = $("h1").first();
+  if (firstH1.length) firstH1.remove();
+  return $.html();
+}
+
 function extractImageFromNodes(
   $: cheerio.CheerioAPI,
   nodes: Element[]

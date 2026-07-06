@@ -58,6 +58,7 @@ export default async function PostPage({ params }: PageProps) {
   const featured = getFeaturedImage(post);
   const categories = getPostCategories(post);
   const postTitle = stripHtml(post.title.rendered);
+  const excerpt = stripHtml(post.excerpt.rendered);
 
   const breadcrumbs = [
     { label: getSiteName(), href: "/" },
@@ -70,52 +71,69 @@ export default async function PostPage({ params }: PageProps) {
   return (
     <SiteLayout>
       <JsonLd data={schemaGraph} />
-      <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+      <article className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
         <Breadcrumbs items={breadcrumbs} />
 
-        <div className="mb-8 flex flex-wrap items-center gap-3 text-sm text-zinc-500">
-          <time dateTime={post.date}>
-            {new Date(post.date).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </time>
-          {post.modified !== post.date && (
-            <>
-              <span aria-hidden="true">·</span>
-              <span>
-                Updated{" "}
-                {new Date(post.modified).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </span>
-            </>
-          )}
-          {categories.map((cat) => (
-            <span key={cat.id} className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400">
-              {cat.name}
-            </span>
-          ))}
-        </div>
+        {/* Card-style hero — title left, compact image right */}
+        <header className="mb-8 rounded-2xl border border-zinc-800 bg-zinc-800/20 p-5 sm:p-6">
+          <div className="flex flex-col-reverse gap-5 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0 flex-1">
+              <h1 className="text-2xl font-bold leading-tight text-white sm:text-3xl">
+                {postTitle}
+              </h1>
+              {excerpt && (
+                <p className="mt-3 text-sm leading-relaxed text-zinc-400 sm:text-base">
+                  {excerpt}
+                </p>
+              )}
+              <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-zinc-500 sm:text-sm">
+                <time dateTime={post.date}>
+                  {new Date(post.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+                {post.modified !== post.date && (
+                  <>
+                    <span aria-hidden="true">·</span>
+                    <span>
+                      Updated{" "}
+                      {new Date(post.modified).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
+                  </>
+                )}
+                {categories.map((cat) => (
+                  <span
+                    key={cat.id}
+                    className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-400"
+                  >
+                    {cat.name}
+                  </span>
+                ))}
+              </div>
+            </div>
 
-        {featured && (
-          <figure className="mb-10 overflow-hidden rounded-xl">
-            <Image
-              src={featured.url}
-              alt={featured.alt}
-              width={featured.width ?? 1200}
-              height={featured.height ?? 630}
-              className="h-auto w-full"
-              priority
-            />
-          </figure>
-        )}
+            {featured && (
+              <figure className="mx-auto shrink-0 sm:mx-0">
+                <Image
+                  src={featured.url}
+                  alt={featured.alt}
+                  width={160}
+                  height={160}
+                  className="h-32 w-32 rounded-2xl object-cover sm:h-36 sm:w-36"
+                  priority
+                />
+              </figure>
+            )}
+          </div>
+        </header>
 
-        {/* WordPress content includes H1, H2, H3, images — rendered as-is */}
-        <WordPressContent html={post.content.rendered} />
+        <WordPressContent html={post.content.rendered} skipLeadingH1 />
       </article>
     </SiteLayout>
   );
