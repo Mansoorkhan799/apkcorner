@@ -57,8 +57,8 @@ export default async function HomePage() {
           <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
             <div>
               <h1 className="max-w-xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-[3.25rem]">
-                Download, Play &amp; Earn —{" "}
-                <span className="text-emerald-400">The Right Way</span>
+                Download and Play New{" "}
+                <span className="text-emerald-400">Pakistani Earning Games 2026</span>
               </h1>
               <p className="mt-5 max-w-xl text-lg leading-relaxed text-zinc-400">
                 Trusted APK downloads, in-depth earning guides, and honest reviews
