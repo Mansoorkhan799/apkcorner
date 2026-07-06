@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import JsonLd from "@/components/JsonLd";
-import { buildSiteMetadata, getSiteName } from "@/lib/seo";
+import { buildSiteMetadata, getSiteDescription, getSiteTitle } from "@/lib/seo";
 import { buildSiteGraph } from "@/lib/schema/builders";
 import "./globals.css";
 
@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = buildSiteMetadata(
-  getSiteName(),
-  "Pakistani Teen Patti APK downloads, earning guides, macros, and game reviews."
+  getSiteTitle(),
+  getSiteDescription()
 );
 
 export default function RootLayout({

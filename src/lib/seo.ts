@@ -4,6 +4,12 @@ import { getFeaturedImage, getWordPressOrigin, stripHtml } from "@/lib/wordpress
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? "Teen Patti APKs";
+const SITE_TITLE =
+  process.env.NEXT_PUBLIC_SITE_TITLE ??
+  "Teen Patti APKs - The Hub of Pakistani Apps and Games";
+const SITE_DESCRIPTION =
+  process.env.NEXT_PUBLIC_SITE_DESCRIPTION ??
+  "TeenPattiAPKs is a platform where you can find the latest Teen Patti APK files, and Games. We Ensure that all files shared are safe and secure.";
 
 export const siteIcons: Metadata["icons"] = {
   icon: [
@@ -85,6 +91,14 @@ export function buildSiteMetadata(
 
 export function getSiteName(): string {
   return SITE_NAME;
+}
+
+export function getSiteTitle(): string {
+  return SITE_TITLE;
+}
+
+export function getSiteDescription(): string {
+  return SITE_DESCRIPTION;
 }
 
 export function getSiteUrl(): string {

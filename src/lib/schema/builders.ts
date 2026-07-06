@@ -13,7 +13,7 @@ import {
   SCHEMA_CONTEXT,
 } from "./constants";
 import { getFeaturedImage, stripHtml } from "@/lib/wordpress";
-import { getSiteName, getSiteUrl } from "@/lib/seo";
+import { getSiteDescription, getSiteName, getSiteUrl } from "@/lib/seo";
 
 type JsonLdObject = Record<string, unknown>;
 
@@ -49,8 +49,7 @@ export function buildWebSiteSchema(): JsonLdObject {
     "@id": `${url}/#website`,
     name: getSiteName(),
     url,
-    description:
-      "Teen Patti APK downloads, earning guides, and step-by-step tutorials for Pakistan.",
+    description: getSiteDescription(),
     publisher: { "@id": `${url}/#organization` },
     inLanguage: "en-PK",
   };
