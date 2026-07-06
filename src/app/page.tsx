@@ -2,6 +2,8 @@ import Link from "next/link";
 import SiteLayout from "@/components/SiteLayout";
 import PostColumn from "@/components/PostColumn";
 import SiteInfoTable from "@/components/SiteInfoTable";
+import FadeIn from "@/components/motion/FadeIn";
+import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
 import { getCategoryBySlug, getPostsByCategory } from "@/lib/wordpress";
 
 export const revalidate = 3600;
@@ -68,7 +70,7 @@ export default async function HomePage() {
   return (
     <SiteLayout>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-zinc-800/80 py-10 sm:py-14 md:py-20">
+      <FadeIn as="section" className="relative overflow-hidden border-b border-zinc-800/80 py-10 sm:py-14 md:py-20">
         <div className="relative mx-auto max-w-6xl px-5 sm:px-6">
           <div className="grid items-start gap-8 md:gap-10 lg:grid-cols-2 lg:gap-12">
             <div className="min-w-0">
@@ -97,15 +99,15 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="lg:pt-1">
+            <FadeIn delay={0.15} className="lg:pt-1">
               <SiteInfoTable />
-            </div>
+            </FadeIn>
           </div>
         </div>
-      </section>
+      </FadeIn>
 
       {/* Posts — two columns */}
-      <section className="border-b border-zinc-800/80 py-10 sm:py-14 md:py-20">
+      <FadeIn as="section" className="border-b border-zinc-800/80 py-10 sm:py-14 md:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-6">
           {!wpConnected ? (
             <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-6 text-amber-200">
@@ -131,10 +133,10 @@ export default async function HomePage() {
             </div>
           )}
         </div>
-      </section>
+      </FadeIn>
 
       {/* Features */}
-      <section className="border-b border-zinc-800/80 py-10 sm:py-14 md:py-20">
+      <FadeIn as="section" className="border-b border-zinc-800/80 py-10 sm:py-14 md:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-6">
           <div className="text-center">
             <h2 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
@@ -145,11 +147,11 @@ export default async function HomePage() {
               structured for clarity from download to withdrawal.
             </p>
           </div>
-          <div className="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
+          <StaggerContainer className="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
             {features.map((feature) => (
-              <div
+              <StaggerItem
                 key={feature.title}
-                className="rounded-2xl border border-zinc-800 bg-zinc-800/30 p-5 sm:p-6 transition hover:border-emerald-500/30 hover:bg-zinc-800/50"
+                className="rounded-2xl border border-zinc-800 bg-zinc-800/30 p-5 transition hover:border-emerald-500/30 hover:bg-zinc-800/50 sm:p-6"
               >
                 <span className="text-2xl" role="img" aria-hidden="true">
                   {feature.icon}
@@ -158,14 +160,14 @@ export default async function HomePage() {
                 <p className="mt-2 text-sm leading-relaxed text-zinc-400">
                   {feature.description}
                 </p>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
-      </section>
+      </FadeIn>
 
       {/* Who We Are */}
-      <section className="border-b border-zinc-800/80 py-10 sm:py-14 md:py-20">
+      <FadeIn as="section" className="border-b border-zinc-800/80 py-10 sm:py-14 md:py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-6">
           <div className="grid items-start gap-8 md:grid-cols-2 md:gap-10">
             <div>
@@ -222,10 +224,10 @@ export default async function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </FadeIn>
 
       {/* CTA */}
-      <section className="border-t border-zinc-800/80 py-10 sm:py-14 md:py-16">
+      <FadeIn as="section" className="border-t border-zinc-800/80 py-10 sm:py-14 md:py-16">
         <div className="mx-auto max-w-6xl px-5 text-center sm:px-6">
           <h2 className="text-xl font-bold text-white sm:text-2xl md:text-3xl">
             Have a Question or Suggestion?
@@ -241,7 +243,7 @@ export default async function HomePage() {
             Contact Us
           </Link>
         </div>
-      </section>
+      </FadeIn>
     </SiteLayout>
   );
 }

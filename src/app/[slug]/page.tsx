@@ -5,6 +5,7 @@ import SiteLayout from "@/components/SiteLayout";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import WordPressContent from "@/components/WordPressContent";
 import JsonLd from "@/components/JsonLd";
+import FadeIn from "@/components/motion/FadeIn";
 import { buildPostMetadata, getSiteName } from "@/lib/seo";
 import { buildPostSchemaGraph } from "@/lib/schema/builders";
 import {
@@ -74,6 +75,7 @@ export default async function PostPage({ params }: PageProps) {
       <article className="mx-auto max-w-4xl px-5 py-8 sm:px-6 sm:py-10">
         <Breadcrumbs items={breadcrumbs} />
 
+        <FadeIn>
         {/* Card-style hero — title left, compact image right */}
         <header className="mb-6 rounded-2xl border border-zinc-800 bg-zinc-800/20 p-4 sm:mb-8 sm:p-6">
           <div className="flex flex-col-reverse gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-5">
@@ -132,8 +134,11 @@ export default async function PostPage({ params }: PageProps) {
             )}
           </div>
         </header>
+        </FadeIn>
 
+        <FadeIn delay={0.1}>
         <WordPressContent html={post.content.rendered} skipLeadingH1 />
+        </FadeIn>
       </article>
     </SiteLayout>
   );

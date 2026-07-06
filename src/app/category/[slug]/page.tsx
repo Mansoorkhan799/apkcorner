@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import SiteLayout from "@/components/SiteLayout";
-import PostCard from "@/components/PostCard";
+import AnimatedPostGrid from "@/components/AnimatedPostGrid";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
+import FadeIn from "@/components/motion/FadeIn";
 import { buildSiteMetadata, getSiteName, getSiteUrl } from "@/lib/seo";
 import {
   buildBreadcrumbSchema,
@@ -83,19 +84,20 @@ export default async function CategoryPage({ params }: PageProps) {
       <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-12">
         <Breadcrumbs items={breadcrumbs} />
 
-        <h1 className="text-3xl font-bold tracking-tight text-white">{category.name}</h1>
-        {category.description && (
-          <p className="mt-2 max-w-2xl text-zinc-400">{category.description}</p>
-        )}
+        <FadeIn>
+          <h1 className="text-3xl font-bold tracking-tight text-white">{category.name}</h1>
+          {category.description && (
+            <p className="mt-2 max-w-2xl text-zinc-400">{category.description}</p>
+          )}
+        </FadeIn>
 
         {posts.length === 0 ? (
           <p className="mt-10 text-zinc-500">No posts in this category yet.</p>
         ) : (
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
+          <AnimatedPostGrid
+            posts={posts}
+            className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          />
         )}
       </div>
     </SiteLayout>

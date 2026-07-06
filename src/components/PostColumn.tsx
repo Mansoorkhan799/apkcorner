@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import PostCard from "@/components/PostCard";
+import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
 import type { WPPost } from "@/types/wordpress";
 
 interface PostColumnProps {
@@ -35,11 +38,13 @@ export default function PostColumn({
           New guides coming soon.
         </p>
       ) : (
-        <div className="flex flex-col gap-2">
+        <StaggerContainer className="flex flex-col gap-2">
           {posts.map((post) => (
-            <PostCard key={post.id} post={post} compact />
+            <StaggerItem key={post.id}>
+              <PostCard post={post} compact />
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       )}
     </div>
   );

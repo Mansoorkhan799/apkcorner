@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 import MobileNav from "@/components/MobileNav";
 import { getSiteName } from "@/lib/seo";
 
@@ -11,8 +14,15 @@ const navLinks = [
 ];
 
 export default function Header() {
+  const prefersReducedMotion = useReducedMotion();
+
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-800/80 bg-zinc-900/95 backdrop-blur-md">
+    <motion.header
+      className="sticky top-0 z-50 border-b border-zinc-800/80 bg-zinc-900/95 backdrop-blur-md"
+      initial={prefersReducedMotion ? false : { y: -16, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+    >
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-3 px-5 sm:h-16 sm:px-6">
         <Link href="/" className="flex min-w-0 items-center gap-2.5">
           <Image
@@ -41,6 +51,6 @@ export default function Header() {
 
         <MobileNav />
       </div>
-    </header>
+    </motion.header>
   );
 }

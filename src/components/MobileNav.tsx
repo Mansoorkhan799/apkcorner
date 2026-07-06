@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const navLinks = [
@@ -12,6 +13,7 @@ const navLinks = [
 
 export default function MobileNav() {
   const [open, setOpen] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -40,30 +42,47 @@ export default function MobileNav() {
         )}
       </button>
 
-      {open && (
-        <>
-          <div
-            className="fixed inset-0 top-14 z-40 bg-black/60 sm:top-16"
-            onClick={() => setOpen(false)}
-            aria-hidden="true"
-          />
-          <nav className="fixed left-0 right-0 top-14 z-50 border-b border-zinc-800 bg-zinc-900 px-5 py-4 shadow-xl sm:top-16">
-            <ul className="space-y-1">
-              {navLinks.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="block rounded-lg px-3 py-3 text-base font-medium text-zinc-300 transition hover:bg-zinc-800 hover:text-emerald-400"
+      <AnimatePresence>
+        {open && (
+          <>
+            <motion.div
+              className="fixed inset-0 top-14 z-40 bg-black/60 sm:top-16"
+              onClick={() => setOpen(false)}
+              aria-hidden="true"
+              initial={prefersReducedMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            />
+            <motion.nav
+              className="fixed left-0 right-0 top-14 z-50 border-b border-zinc-800 bg-zinc-900 px-5 py-4 shadow-xl sm:top-16"
+              initial={prefersReducedMotion ? false : { opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <ul className="space-y-1">
+                {navLinks.map((link, index) => (
+                  <motion.li
+                    key={link.href}
+                    initial={prefersReducedMotion ? false : { opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05, duration: 0.25 }}
                   >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </>
-      )}
+                    <Link
+                      href={link.href}
+                      onClick={() => setOpen(false)}
+                      className="block rounded-lg px-3 py-3 text-base font-medium text-zinc-300 transition hover:bg-zinc-800 hover:text-emerald-400"
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.li>
+                ))}
+              </ul>
+            </motion.nav>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
