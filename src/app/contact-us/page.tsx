@@ -10,7 +10,7 @@ export const metadata: Metadata = buildSiteMetadata(
   "/contact-us"
 );
 
-const contactEmail = "contact@teenpattiapks.com.pk";
+const contactEmail = "teenpattiapks.site@gmail.com";
 
 export default function ContactUsPage() {
   return (
