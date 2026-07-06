@@ -1,6 +1,7 @@
 import Link from "next/link";
 import SiteLayout from "@/components/SiteLayout";
 import PostCard from "@/components/PostCard";
+import SiteInfoTable from "@/components/SiteInfoTable";
 import { getPosts } from "@/lib/wordpress";
 
 export const revalidate = 3600;
@@ -51,34 +52,38 @@ export default async function HomePage() {
   return (
     <SiteLayout>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-zinc-800/80 py-20 sm:py-28">
+      <section className="relative overflow-hidden border-b border-zinc-800/80 py-14 sm:py-20">
         <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-sm font-medium text-emerald-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-            Pakistan&apos;s Teen Patti APK Hub
-          </div>
-          <h1 className="mt-6 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-[3.25rem]">
-            Download, Play &amp; Earn —{" "}
-            <span className="text-emerald-400">The Right Way</span>
-          </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-zinc-400">
-            Trusted APK downloads, in-depth earning guides, and honest reviews
-            for Teen Patti apps — built for players in Pakistan.
-          </p>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-500">
-            Teen Patti has become one of Pakistan&apos;s most popular mobile card games,
-            with millions of players downloading APKs to play and earn through JazzCash
-            and Easypaisa. As the market grows, players need trusted guides to find
-            safe apps, understand withdrawal rules, and unlock real earning potential
-            — without falling for scams or outdated downloads.
-          </p>
-          <div className="mt-10 flex flex-wrap gap-8">
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <p className="text-2xl font-bold text-white">{stat.value}</p>
-                <p className="text-sm text-zinc-500">{stat.label}</p>
+          <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
+            <div>
+              <h1 className="max-w-xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-[3.25rem]">
+                Download, Play &amp; Earn —{" "}
+                <span className="text-emerald-400">The Right Way</span>
+              </h1>
+              <p className="mt-5 max-w-xl text-lg leading-relaxed text-zinc-400">
+                Trusted APK downloads, in-depth earning guides, and honest reviews
+                for Teen Patti apps — built for players in Pakistan.
+              </p>
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-zinc-500">
+                Teen Patti has become one of Pakistan&apos;s most popular mobile card games,
+                with millions of players downloading APKs to play and earn through JazzCash
+                and Easypaisa. As the market grows, players need trusted guides to find
+                safe apps, understand withdrawal rules, and unlock real earning potential
+                — without falling for scams or outdated downloads.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-8">
+                {stats.map((stat) => (
+                  <div key={stat.label}>
+                    <p className="text-2xl font-bold text-white">{stat.value}</p>
+                    <p className="text-sm text-zinc-500">{stat.label}</p>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            <div className="lg:pt-1">
+              <SiteInfoTable />
+            </div>
           </div>
         </div>
       </section>
