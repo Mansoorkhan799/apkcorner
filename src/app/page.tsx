@@ -43,11 +43,12 @@ export default async function HomePage() {
       <section className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
         {!wpConnected ? (
           <div className="rounded-xl border border-amber-200 bg-amber-50 p-6 text-amber-900">
-            <p className="font-semibold">WordPress not connected yet</p>
+            <p className="font-semibold">WordPress not connected</p>
             <p className="mt-2 text-sm leading-relaxed">
-              Add your <code className="rounded bg-amber-100 px-1">WORDPRESS_API_URL</code> to{" "}
-              <code className="rounded bg-amber-100 px-1">.env.local</code> and install the
-              headless snippet on WordPress. Posts will appear here automatically.
+              On <strong>Vercel</strong>, go to Project → Settings → Environment Variables
+              and add <code className="rounded bg-amber-100 px-1">WORDPRESS_API_URL</code>{" "}
+              = <code className="rounded bg-amber-100 px-1">https://cms.teenpattiapks.com.pk/wp-json</code>,
+              then <strong>Redeploy</strong>.
             </p>
           </div>
         ) : posts.length === 0 ? (
