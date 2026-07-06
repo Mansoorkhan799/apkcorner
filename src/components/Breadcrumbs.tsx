@@ -18,11 +18,11 @@ export default function Breadcrumbs({ items }: BreadcrumbsProps) {
 
           return (
             <li key={item.label} className="flex items-center gap-1.5">
-              {index > 0 && <span aria-hidden="true">/</span>}
+              {index > 0 && <span aria-hidden="true" className="text-zinc-600">/</span>}
               {isLast || !item.href ? (
-                <span className="text-zinc-700">{item.label}</span>
+                <span className="text-zinc-300">{item.label}</span>
               ) : (
-                <Link href={item.href} className="hover:text-emerald-700">
+                <Link href={item.href} className="hover:text-emerald-400">
                   {item.label}
                 </Link>
               )}

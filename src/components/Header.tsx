@@ -11,7 +11,7 @@ const navLinks = [
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-200/80 bg-white/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-zinc-800/80 bg-zinc-900/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5">
           <Image
@@ -21,16 +21,16 @@ export default function Header() {
             height={36}
             className="rounded-lg"
           />
-          <span className="text-lg font-bold tracking-tight text-zinc-900 sm:text-xl">
+          <span className="text-lg font-bold tracking-tight text-white sm:text-xl">
             {getSiteName()}
           </span>
         </Link>
-        <nav className="flex items-center gap-5 text-sm font-medium text-zinc-600 sm:gap-7">
+        <nav className="flex items-center gap-5 text-sm font-medium text-zinc-400 sm:gap-7">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="transition-colors hover:text-emerald-700"
+              className="transition-colors hover:text-emerald-400"
             >
               {link.label}
             </Link>

@@ -95,7 +95,7 @@ export default async function PostPage({ params }: PageProps) {
             </>
           )}
           {categories.map((cat) => (
-            <span key={cat.id} className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-xs font-medium text-zinc-600">
+            <span key={cat.id} className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400">
               {cat.name}
             </span>
           ))}

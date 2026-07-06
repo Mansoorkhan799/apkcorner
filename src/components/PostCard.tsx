@@ -18,10 +18,10 @@ export default function PostCard({ post }: PostCardProps) {
   const excerpt = stripHtml(post.excerpt.rendered);
 
   return (
-    <article className="group overflow-hidden rounded-xl border border-zinc-200 bg-white transition-shadow hover:shadow-md">
+    <article className="group overflow-hidden rounded-xl border border-zinc-800 bg-zinc-800/30 transition hover:border-emerald-500/30 hover:bg-zinc-800/50">
       <Link href={`/${post.slug}`} className="block">
         {featured ? (
-          <div className="relative aspect-[16/9] overflow-hidden bg-zinc-100">
+          <div className="relative aspect-[16/9] overflow-hidden bg-zinc-800">
             <Image
               src={featured.url}
               alt={featured.alt}
@@ -31,7 +31,7 @@ export default function PostCard({ post }: PostCardProps) {
             />
           </div>
         ) : (
-          <div className="aspect-[16/9] bg-gradient-to-br from-emerald-50 to-zinc-100" />
+          <div className="aspect-[16/9] bg-gradient-to-br from-emerald-900/40 to-zinc-800" />
         )}
 
         <div className="p-5">
@@ -40,7 +40,7 @@ export default function PostCard({ post }: PostCardProps) {
               {categories.slice(0, 2).map((cat) => (
                 <span
                   key={cat.id}
-                  className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700"
+                  className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400"
                 >
                   {cat.name}
                 </span>
@@ -48,19 +48,19 @@ export default function PostCard({ post }: PostCardProps) {
             </div>
           )}
 
-          <h2 className="text-lg font-semibold leading-snug text-zinc-900 group-hover:text-emerald-700">
+          <h2 className="text-lg font-semibold leading-snug text-white group-hover:text-emerald-400">
             {title}
           </h2>
 
           {excerpt && (
-            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-zinc-500">
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-zinc-400">
               {excerpt}
             </p>
           )}
 
           <time
             dateTime={post.date}
-            className="mt-3 block text-xs text-zinc-400"
+            className="mt-3 block text-xs text-zinc-500"
           >
             {new Date(post.date).toLocaleDateString("en-US", {
               year: "numeric",

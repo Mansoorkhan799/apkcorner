@@ -25,41 +25,41 @@ export default function ContactUsPage() {
 
         <div className="grid gap-12 lg:grid-cols-2">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
+            <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
               Contact Us
             </h1>
-            <p className="mt-4 text-lg leading-relaxed text-zinc-500">
+            <p className="mt-4 text-lg leading-relaxed text-zinc-400">
               We read every message. Whether you have a correction, a new app
               suggestion, or a partnership inquiry — we&apos;d love to hear from you.
             </p>
 
             <div className="mt-10 space-y-6">
-              <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-6">
+              <div className="rounded-2xl border border-zinc-800 bg-zinc-800/30 p-6">
                 <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">
                   Email
                 </p>
                 <a
                   href={`mailto:${contactEmail}`}
-                  className="mt-2 block text-lg font-medium text-emerald-600 hover:text-emerald-700"
+                  className="mt-2 block text-lg font-medium text-emerald-400 hover:text-emerald-300"
                 >
                   {contactEmail}
                 </a>
               </div>
 
-              <div className="rounded-2xl border border-zinc-200 p-6">
+              <div className="rounded-2xl border border-zinc-800 bg-zinc-800/20 p-6">
                 <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">
                   Response Time
                 </p>
-                <p className="mt-2 text-zinc-600">
+                <p className="mt-2 text-zinc-400">
                   We typically respond within 2–3 business days.
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-zinc-200 p-6">
+              <div className="rounded-2xl border border-zinc-800 bg-zinc-800/20 p-6">
                 <p className="text-sm font-semibold uppercase tracking-wider text-zinc-500">
                   What to Include
                 </p>
-                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-zinc-600">
+                <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-zinc-400">
                   <li>App name and issue you encountered</li>
                   <li>Link to the guide (if applicable)</li>
                   <li>Screenshots if reporting outdated info</li>
@@ -68,14 +68,14 @@ export default function ContactUsPage() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
-            <h2 className="text-lg font-semibold text-zinc-900">Send a Message</h2>
-            <p className="mt-2 text-sm text-zinc-500">
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-800/30 p-8">
+            <h2 className="text-lg font-semibold text-white">Send a Message</h2>
+            <p className="mt-2 text-sm text-zinc-400">
               Click below to open your email client with a pre-filled subject line.
             </p>
             <a
               href={`mailto:${contactEmail}?subject=Teen%20Patti%20APKs%20-%20Website%20Inquiry`}
-              className="mt-6 flex w-full items-center justify-center rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
+              className="mt-6 flex w-full items-center justify-center rounded-xl bg-emerald-500 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-emerald-400"
             >
               Email Us
             </a>
@@ -84,21 +84,21 @@ export default function ContactUsPage() {
               assistance for third-party games. For app-specific issues, contact
               the developer directly.
             </p>
-            <div className="mt-8 border-t border-zinc-100 pt-6">
+            <div className="mt-8 border-t border-zinc-800 pt-6">
               <p className="text-sm text-zinc-500">Before contacting us, you may find answers in:</p>
               <ul className="mt-3 space-y-2 text-sm">
                 <li>
-                  <Link href="/disclaimer" className="text-emerald-600 hover:underline">
+                  <Link href="/disclaimer" className="text-emerald-400 hover:underline">
                     Disclaimer
                   </Link>
                 </li>
                 <li>
-                  <Link href="/responsible-gaming" className="text-emerald-600 hover:underline">
+                  <Link href="/responsible-gaming" className="text-emerald-400 hover:underline">
                     Responsible Gaming
                   </Link>
                 </li>
                 <li>
-                  <Link href="/privacy-policy" className="text-emerald-600 hover:underline">
+                  <Link href="/privacy-policy" className="text-emerald-400 hover:underline">
                     Privacy Policy
                   </Link>
                 </li>
