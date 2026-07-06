@@ -31,7 +31,7 @@ export default function PostCard({ post }: PostCardProps) {
             />
           </div>
         ) : (
-          <div className="aspect-[16/9] bg-gradient-to-br from-emerald-900/40 to-zinc-800" />
+          <div className="aspect-[16/9] bg-zinc-800" />
         )}
 
         <div className="p-5">
