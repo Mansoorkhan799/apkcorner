@@ -19,6 +19,15 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+.legal-content h2 {
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.legal-content ul {
+  margin-top: 0.5rem;
+}
+
 /*
  * WordPress / Kadence content styles
  * Structure is never changed — only visual presentation.
