@@ -1,0 +1,75 @@
+import Link from "next/link";
+import Image from "next/image";
+import type { WPPost } from "@/types/wordpress";
+import {
+  getFeaturedImage,
+  getPostCategories,
+  stripHtml,
+} from "@/lib/wordpress";
+
+interface PostCardProps {
+  post: WPPost;
+}
+
+export default function PostCard({ post }: PostCardProps) {
+  const featured = getFeaturedImage(post);
+  const categories = getPostCategories(post);
+  const title = stripHtml(post.title.rendered);
+  const excerpt = stripHtml(post.excerpt.rendered);
+
+  return (
+    <article className="group overflow-hidden rounded-xl border border-zinc-200 bg-white transition-shadow hover:shadow-md">
+      <Link href={`/${post.slug}`} className="block">
+        {featured ? (
+          <div className="relative aspect-[16/9] overflow-hidden bg-zinc-100">
+            <Image
+              src={featured.url}
+              alt={featured.alt}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </div>
+        ) : (
+          <div className="aspect-[16/9] bg-gradient-to-br from-emerald-50 to-zinc-100" />
+        )}
+
+        <div className="p-5">
+          {categories.length > 0 && (
+            <div className="mb-2 flex flex-wrap gap-2">
+              {categories.slice(0, 2).map((cat) => (
+                <span
+                  key={cat.id}
+                  className="rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700"
+                >
+                  {cat.name}
+                </span>
+              ))}
+            </div>
+          )}
+
+          <h2 className="text-lg font-semibold leading-snug text-zinc-900 group-hover:text-emerald-700">
+            {title}
+          </h2>
+
+          {excerpt && (
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-zinc-500">
+              {excerpt}
+            </p>
+          )}
+
+          <time
+            dateTime={post.date}
+            className="mt-3 block text-xs text-zinc-400"
+          >
+            {new Date(post.date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </time>
+        </div>
+      </Link>
+    </article>
+  );
+}
