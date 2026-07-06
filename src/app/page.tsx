@@ -90,6 +90,46 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Teen Patti APKs — posts grid */}
+      <section className="border-b border-zinc-800/80 py-16 sm:py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          {!wpConnected ? (
+            <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-6 text-amber-200">
+              <p className="font-semibold">Guides loading soon</p>
+              <p className="mt-2 text-sm text-amber-200/80">
+                New articles are published regularly. Check back shortly.
+              </p>
+            </div>
+          ) : posts.length === 0 ? (
+            <p className="text-center text-zinc-500">New guides coming soon.</p>
+          ) : (
+            <>
+              <div className="mb-10 flex items-end justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-white sm:text-3xl">
+                    Teen Patti APKs
+                  </h2>
+                  <p className="mt-2 text-zinc-400">
+                    Fresh APK downloads, earning tips, and game reviews
+                  </p>
+                </div>
+                <Link
+                  href="/blog"
+                  className="text-sm font-semibold text-emerald-400 hover:text-emerald-300"
+                >
+                  View all →
+                </Link>
+              </div>
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {posts.map((post) => (
+                  <PostCard key={post.id} post={post} />
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      </section>
+
       {/* Features */}
       <section className="border-b border-zinc-800/80 py-16 sm:py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
@@ -178,46 +218,6 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Latest Guides */}
-      <section className="py-16 sm:py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          {!wpConnected ? (
-            <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-6 text-amber-200">
-              <p className="font-semibold">Guides loading soon</p>
-              <p className="mt-2 text-sm text-amber-200/80">
-                New articles are published regularly. Check back shortly.
-              </p>
-            </div>
-          ) : posts.length === 0 ? (
-            <p className="text-center text-zinc-500">New guides coming soon.</p>
-          ) : (
-            <>
-              <div className="mb-10 flex items-end justify-between">
-                <div>
-                  <h2 className="text-2xl font-bold text-white sm:text-3xl">
-                    Latest Guides
-                  </h2>
-                  <p className="mt-2 text-zinc-400">
-                    Fresh APK downloads, earning tips, and game reviews
-                  </p>
-                </div>
-                <Link
-                  href="/blog"
-                  className="text-sm font-semibold text-emerald-400 hover:text-emerald-300"
-                >
-                  View all →
-                </Link>
-              </div>
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {posts.map((post) => (
-                  <PostCard key={post.id} post={post} />
-                ))}
-              </div>
-            </>
-          )}
         </div>
       </section>
 
