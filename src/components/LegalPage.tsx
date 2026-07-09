@@ -19,20 +19,20 @@ export default function LegalPage({ title, description, children }: LegalPagePro
             { label: title },
           ]}
         />
-        <header className="mb-10 border-b border-zinc-800 pb-8">
+        <header className="mb-10 border-b border-border-strong pb-8">
           <h1 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
             {title}
           </h1>
           {description && (
-            <p className="mt-3 text-lg leading-relaxed text-zinc-400">{description}</p>
+            <p className="mt-3 text-lg leading-relaxed text-body">{description}</p>
           )}
         </header>
-        <div className="legal-content space-y-6 leading-relaxed text-zinc-400">
+        <div className="legal-content space-y-6 leading-relaxed text-body">
           {children}
         </div>
-        <p className="mt-12 text-sm text-zinc-500">
+        <p className="mt-12 text-sm text-muted">
           Last updated: July 2026 ·{" "}
-          <Link href="/contact-us" className="text-emerald-400 hover:text-emerald-300">
+          <Link href="/contact-us" className="text-accent-bright hover:text-white">
             Contact us
           </Link>{" "}
           with questions.

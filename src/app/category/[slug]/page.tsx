@@ -87,12 +87,12 @@ export default async function CategoryPage({ params }: PageProps) {
         <FadeIn>
           <h1 className="text-3xl font-bold tracking-tight text-white">{category.name}</h1>
           {category.description && (
-            <p className="mt-2 max-w-2xl text-zinc-400">{category.description}</p>
+            <p className="mt-2 max-w-2xl text-body">{category.description}</p>
           )}
         </FadeIn>
 
         {posts.length === 0 ? (
-          <p className="mt-10 text-zinc-500">No posts in this category yet.</p>
+          <p className="mt-10 text-muted">No posts in this category yet.</p>
         ) : (
           <AnimatedPostGrid
             posts={posts}

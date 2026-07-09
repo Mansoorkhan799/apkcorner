@@ -1,6 +1,6 @@
 {
-  "name": "Teen Patti APKs",
-  "short_name": "Teen Patti",
+  "name": "APK Corner",
+  "short_name": "APK Corner",
   "icons": [
     {
       "src": "/favicon/web-app-manifest-192x192.png",
@@ -15,7 +15,7 @@
       "purpose": "maskable"
     }
   ],
-  "theme_color": "#059669",
-  "background_color": "#ffffff",
+  "theme_color": "#0b100b",
+  "background_color": "#0b100b",
   "display": "standalone"
 }

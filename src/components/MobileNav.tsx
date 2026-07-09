@@ -29,7 +29,7 @@ export default function MobileNav() {
         aria-expanded={open}
         aria-label={open ? "Close menu" : "Open menu"}
         onClick={() => setOpen((prev) => !prev)}
-        className="flex h-10 w-10 items-center justify-center rounded-lg border border-zinc-800 text-zinc-300 transition hover:border-zinc-700 hover:text-white"
+        className="flex h-10 w-10 items-center justify-center rounded-lg border border-border-strong bg-surface text-body transition hover:border-accent hover:text-accent-bright"
       >
         {open ? (
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -46,7 +46,7 @@ export default function MobileNav() {
         {open && (
           <>
             <motion.div
-              className="fixed inset-0 top-14 z-40 bg-black/60 sm:top-16"
+              className="fixed inset-0 top-14 z-40 bg-background/80 sm:top-16"
               onClick={() => setOpen(false)}
               aria-hidden="true"
               initial={prefersReducedMotion ? false : { opacity: 0 }}
@@ -55,7 +55,7 @@ export default function MobileNav() {
               transition={{ duration: 0.2 }}
             />
             <motion.nav
-              className="fixed left-0 right-0 top-14 z-50 border-b border-zinc-800 bg-zinc-900 px-5 py-4 shadow-xl sm:top-16"
+              className="site-header-bg fixed left-0 right-0 top-14 z-50 px-5 py-4 shadow-xl sm:top-16"
               initial={prefersReducedMotion ? false : { opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
@@ -72,7 +72,7 @@ export default function MobileNav() {
                     <Link
                       href={link.href}
                       onClick={() => setOpen(false)}
-                      className="block rounded-lg px-3 py-3 text-base font-medium text-zinc-300 transition hover:bg-zinc-800 hover:text-emerald-400"
+                      className="block rounded-lg px-3 py-3 text-base font-medium text-body transition hover:bg-surface hover:text-accent-bright"
                     >
                       {link.label}
                     </Link>

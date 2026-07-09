@@ -2,19 +2,105 @@
 @plugin "@tailwindcss/typography";
 
 :root {
-  --background: #18181b;
-  --foreground: #fafafa;
+  --background-top: #111a11;
+  --background: #0b100b;
+  --background-bottom: #070a07;
+  --foreground: #ffffff;
+  --body: #c8d4c8;
+  --surface: #151c15;
+  --surface-raised: #1e271e;
+  --surface-alt: #121812;
+  --border: #2f3f2f;
+  --border-strong: #405540;
+  --muted: #94a394;
+  --muted-dim: #6b7a6b;
+  --accent: #10b981;
+  --accent-bright: #34d399;
+  --accent-dim: #059669;
 }
 
 @theme inline {
   --color-background: var(--background);
+  --color-background-top: var(--background-top);
+  --color-background-bottom: var(--background-bottom);
   --color-foreground: var(--foreground);
+  --color-body: var(--body);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-alt: var(--surface-alt);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-muted: var(--muted);
+  --color-muted-dim: var(--muted-dim);
+  --color-accent: var(--accent);
+  --color-accent-bright: var(--accent-bright);
+  --color-accent-dim: var(--accent-dim);
   --font-sans: var(--font-geist-sans);
 }
 
 body {
   background: var(--background);
+  color: var(--body);
+}
+
+/* Shared panel styles — boxes, cards, tables */
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+.panel-header {
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--border);
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #ffffff;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: var(--accent-bright);
+}
+
+.btn-secondary {
+  background: var(--surface-raised);
   color: var(--foreground);
+  border: 1px solid var(--border-strong);
+  font-weight: 600;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.btn-secondary:hover {
+  background: var(--surface);
+  border-color: var(--accent);
+  color: var(--accent-bright);
+}
+
+.site-page-bg {
+  background-color: var(--background);
+  background-image: linear-gradient(
+    to bottom,
+    var(--background-top) 0%,
+    var(--background) 45%,
+    var(--background-bottom) 100%
+  );
+}
+
+.site-header-bg {
+  background-color: var(--background-top);
+  border-bottom: 1px solid var(--border);
+}
+
+.section-label {
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
 .legal-content h2 {
@@ -22,11 +108,11 @@ body {
   margin-bottom: 0.75rem;
   font-size: 1.25rem;
   font-weight: 600;
-  color: #fafafa;
+  color: var(--foreground);
 }
 
 .legal-content strong {
-  color: #e4e4e7;
+  color: var(--foreground);
 }
 
 .legal-content ul {
@@ -40,20 +126,19 @@ body {
  */
 .wp-content.entry-content {
   line-height: 1.75;
-  color: #d4d4d8;
+  color: var(--body);
 }
 
 .wp-content.entry-content > * + * {
   margin-top: 1.25em;
 }
 
-/* Headings — preserve hierarchy, do not override tag level */
 .wp-content.entry-content h1 {
   font-size: 1.625rem;
   font-weight: 700;
   line-height: 1.25;
   letter-spacing: -0.025em;
-  color: #fafafa;
+  color: var(--foreground);
   margin-top: 0;
   margin-bottom: 0.75em;
 }
@@ -70,7 +155,7 @@ body {
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: -0.02em;
-  color: #fafafa;
+  color: var(--foreground);
   margin-top: 2em;
   margin-bottom: 0.6em;
 }
@@ -85,7 +170,7 @@ body {
   font-size: 1.375rem;
   font-weight: 600;
   line-height: 1.4;
-  color: #f4f4f5;
+  color: var(--foreground);
   margin-top: 1.75em;
   margin-bottom: 0.5em;
 }
@@ -93,7 +178,7 @@ body {
 .wp-content.entry-content h4 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #f4f4f5;
+  color: var(--foreground);
   margin-top: 1.5em;
   margin-bottom: 0.4em;
 }
@@ -102,7 +187,7 @@ body {
 .wp-content.entry-content h6 {
   font-size: 1rem;
   font-weight: 600;
-  color: #e4e4e7;
+  color: var(--body);
   margin-top: 1.25em;
   margin-bottom: 0.35em;
 }
@@ -113,19 +198,19 @@ body {
 }
 
 .wp-content.entry-content a {
-  color: #34d399;
+  color: var(--accent-bright);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .wp-content.entry-content a:hover {
-  color: #6ee7b7;
+  color: var(--accent-bright);
 }
 
 .wp-content.entry-content strong,
 .wp-content.entry-content b {
   font-weight: 600;
-  color: #fafafa;
+  color: var(--foreground);
 }
 
 .wp-content.entry-content ul,
@@ -169,16 +254,16 @@ body {
   margin-top: 0.75em;
   text-align: center;
   font-size: 0.875rem;
-  color: #71717a;
+  color: var(--muted-dim);
 }
 
 .wp-content.entry-content blockquote {
   margin-top: 1.6em;
   margin-bottom: 1.6em;
   padding-left: 1em;
-  border-left: 4px solid #10b981;
+  border-left: 4px solid var(--accent);
   font-style: italic;
-  color: #a1a1aa;
+  color: var(--muted);
 }
 
 .wp-content.entry-content pre {
@@ -186,7 +271,7 @@ body {
   margin-bottom: 1.6em;
   overflow-x: auto;
   border-radius: 0.5rem;
-  background: #27272a;
+  background: var(--surface);
   padding: 1em 1.25em;
   font-size: 0.875rem;
   line-height: 1.6;
@@ -194,7 +279,7 @@ body {
 
 .wp-content.entry-content code {
   font-size: 0.875em;
-  background: #27272a;
+  background: var(--surface);
   padding: 0.15em 0.35em;
   border-radius: 0.25rem;
 }
@@ -225,25 +310,29 @@ body {
 
 .wp-content.entry-content th,
 .wp-content.entry-content td {
-  border: 1px solid #3f3f46;
+  border: 1px solid var(--border-strong);
   padding: 0.6em 1em;
   text-align: left;
+  color: var(--body);
 }
 
 .wp-content.entry-content th {
-  background: #27272a;
+  background: var(--surface-raised);
   font-weight: 600;
-  color: #fafafa;
+  color: var(--foreground);
+}
+
+.wp-content.entry-content td {
+  background: var(--surface);
 }
 
 .wp-content.entry-content hr {
   margin-top: 3em;
   margin-bottom: 3em;
   border: none;
-  border-top: 1px solid #3f3f46;
+  border-top: 1px solid var(--border);
 }
 
-/* Kadence block wrappers */
 .wp-content.entry-content .kb-row-layout-wrap,
 .wp-content.entry-content .wp-block-kadence-column,
 .wp-content.entry-content .wp-block-kadence-rowlayout {
@@ -262,7 +351,6 @@ body {
   margin-bottom: 1.5em;
 }
 
-/* Gutenberg wide/full alignment */
 .wp-content.entry-content .alignwide {
   max-width: 100%;
 }

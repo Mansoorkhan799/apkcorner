@@ -77,18 +77,18 @@ export default async function PostPage({ params }: PageProps) {
 
         <FadeIn>
         {/* Card-style hero — title left, compact image right */}
-        <header className="mb-6 rounded-2xl border border-zinc-800 bg-zinc-800/20 p-4 sm:mb-8 sm:p-6">
+        <header className="panel mb-6 rounded-2xl p-4 sm:mb-8 sm:p-6">
           <div className="flex flex-col-reverse gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-5">
             <div className="min-w-0 flex-1">
               <h1 className="text-xl font-bold leading-tight text-white sm:text-2xl md:text-3xl">
                 {postTitle}
               </h1>
               {excerpt && (
-                <p className="mt-3 text-sm leading-relaxed text-zinc-400 sm:text-base">
+                <p className="mt-3 text-sm leading-relaxed text-body sm:text-base">
                   {excerpt}
                 </p>
               )}
-              <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-zinc-500 sm:text-sm">
+              <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted sm:text-sm">
                 <time dateTime={post.date}>
                   {new Date(post.date).toLocaleDateString("en-US", {
                     year: "numeric",
@@ -112,7 +112,7 @@ export default async function PostPage({ params }: PageProps) {
                 {categories.map((cat) => (
                   <span
                     key={cat.id}
-                    className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-400"
+                    className="rounded-full border border-accent/40 bg-accent/15 px-2 py-0.5 text-xs font-medium text-accent-bright"
                   >
                     {cat.name}
                   </span>

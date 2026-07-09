@@ -20,10 +20,10 @@ export default function PostCard({ post, compact = false }: PostCardProps) {
 
   if (compact) {
     return (
-      <article className="group rounded-lg border border-zinc-800/80 bg-zinc-800/20 transition hover:border-zinc-700 hover:bg-zinc-800/40">
+      <article className="panel group rounded-lg transition hover:border-accent hover:shadow-[0_8px_32px_rgba(34,197,94,0.12)]">
         <Link href={`/${post.slug}`} className="flex items-center gap-3 p-2.5">
           {featured ? (
-            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md bg-zinc-800">
+            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md bg-surface-raised">
               <Image
                 src={featured.url}
                 alt={featured.alt}
@@ -33,13 +33,13 @@ export default function PostCard({ post, compact = false }: PostCardProps) {
               />
             </div>
           ) : (
-            <div className="h-14 w-14 shrink-0 rounded-md bg-zinc-800" />
+            <div className="h-14 w-14 shrink-0 rounded-md bg-surface-raised" />
           )}
           <div className="min-w-0 flex-1">
-            <h2 className="line-clamp-2 text-sm font-medium leading-snug text-zinc-200 group-hover:text-emerald-400">
+            <h2 className="line-clamp-2 text-sm font-medium leading-snug text-foreground group-hover:text-accent-bright">
               {title}
             </h2>
-            <time dateTime={post.date} className="mt-1 block text-xs text-zinc-500">
+            <time dateTime={post.date} className="mt-1 block text-xs text-muted">
               {new Date(post.date).toLocaleDateString("en-US", {
                 month: "short",
                 day: "numeric",
@@ -53,10 +53,10 @@ export default function PostCard({ post, compact = false }: PostCardProps) {
   }
 
   return (
-    <article className="group overflow-hidden rounded-xl border border-zinc-800 bg-zinc-800/30 transition hover:border-emerald-500/30 hover:bg-zinc-800/50">
+    <article className="panel group overflow-hidden rounded-xl transition hover:border-accent hover:shadow-[0_8px_32px_rgba(34,197,94,0.12)]">
       <Link href={`/${post.slug}`} className="block">
         {featured ? (
-          <div className="relative aspect-[16/9] overflow-hidden bg-zinc-800">
+          <div className="relative aspect-[16/9] overflow-hidden bg-surface-raised">
             <Image
               src={featured.url}
               alt={featured.alt}
@@ -66,7 +66,7 @@ export default function PostCard({ post, compact = false }: PostCardProps) {
             />
           </div>
         ) : (
-          <div className="aspect-[16/9] bg-zinc-800" />
+          <div className="aspect-[16/9] bg-surface-raised" />
         )}
 
         <div className="p-5">
@@ -75,7 +75,7 @@ export default function PostCard({ post, compact = false }: PostCardProps) {
               {categories.slice(0, 2).map((cat) => (
                 <span
                   key={cat.id}
-                  className="rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400"
+                  className="rounded-full border border-accent/40 bg-accent/15 px-2.5 py-0.5 text-xs font-medium text-accent-bright"
                 >
                   {cat.name}
                 </span>
@@ -83,19 +83,19 @@ export default function PostCard({ post, compact = false }: PostCardProps) {
             </div>
           )}
 
-          <h2 className="text-lg font-semibold leading-snug text-white group-hover:text-emerald-400">
+          <h2 className="text-lg font-semibold leading-snug text-white group-hover:text-accent-bright">
             {title}
           </h2>
 
           {excerpt && (
-            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-zinc-400">
+            <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-body">
               {excerpt}
             </p>
           )}
 
           <time
             dateTime={post.date}
-            className="mt-3 block text-xs text-zinc-500"
+            className="mt-3 block text-xs text-muted"
           >
             {new Date(post.date).toLocaleDateString("en-US", {
               year: "numeric",

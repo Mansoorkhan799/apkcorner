@@ -18,7 +18,7 @@ export default function Header() {
 
   return (
     <motion.header
-      className="sticky top-0 z-50 border-b border-zinc-800/80 bg-zinc-900/95 backdrop-blur-md"
+      className="site-header-bg sticky top-0 z-50"
       initial={prefersReducedMotion ? false : { y: -16, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
@@ -37,12 +37,12 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm font-medium text-zinc-400 lg:flex lg:gap-8">
+        <nav className="hidden items-center gap-6 text-sm font-medium text-body lg:flex lg:gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="transition-colors hover:text-emerald-400"
+              className="transition-colors hover:text-accent-bright"
             >
               {link.label}
             </Link>

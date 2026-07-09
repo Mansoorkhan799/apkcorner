@@ -1,11 +1,11 @@
 <?php
 /**
- * Teen Patti APKs — Headless WordPress Setup
+ * APK Corner — Headless WordPress Setup
  *
  * Add to Kadence child theme functions.php (or require this file).
  *
- * Phase 1 (now):  WordPress on teenpattiapks.com.pk — write & preview content
- * Phase 2 (later): Move WP to cms.teenpattiapks.com.pk, Next.js on main domain
+ * Phase 1 (now):  WordPress on apkcorner.com.pk — write & preview content
+ * Phase 2 (later): Move WP to cms.apkcorner.com.pk, Next.js on main domain
  *
  * Plugins needed: Kadence Blocks, Rank Math SEO
  */
@@ -37,8 +37,8 @@ add_action('rest_api_init', function () {
     add_filter('rest_pre_serve_request', function ($value) {
         $allowed_origins = [
             'http://localhost:3000',
-            'https://teenpattiapks.com.pk',
-            'https://www.teenpattiapks.com.pk',
+            'https://apkcorner.com.pk',
+            'https://www.apkcorner.com.pk',
         ];
 
         $origin = get_http_origin();
@@ -54,10 +54,10 @@ add_action('rest_api_init', function () {
 
 // ─── 3. Revalidate Next.js on publish/update ────────────────────────────────
 
-define('MACROKHA_REVALIDATE_URL', 'https://teenpattiapks.com.pk/api/revalidate');
-define('MACROKHA_REVALIDATE_SECRET', 'your-random-secret-here'); // match .env.local
+define('APKCORNER_REVALIDATE_URL', 'https://apkcorner.com.pk/api/revalidate');
+define('APKCORNER_REVALIDATE_SECRET', 'your-random-secret-here'); // match .env.local
 
-function macrokha_revalidate_nextjs($post_id, $post) {
+function apkcorner_revalidate_nextjs($post_id, $post) {
     if (wp_is_post_revision($post_id) || $post->post_status !== 'publish') {
         return;
     }
@@ -67,7 +67,7 @@ function macrokha_revalidate_nextjs($post_id, $post) {
     }
 
     wp_remote_post(
-        add_query_arg('secret', MACROKHA_REVALIDATE_SECRET, MACROKHA_REVALIDATE_URL),
+        add_query_arg('secret', APKCORNER_REVALIDATE_SECRET, APKCORNER_REVALIDATE_URL),
         [
             'timeout' => 5,
             'headers' => ['Content-Type' => 'application/json'],
@@ -76,21 +76,21 @@ function macrokha_revalidate_nextjs($post_id, $post) {
     );
 }
 
-add_action('save_post', 'macrokha_revalidate_nextjs', 10, 2);
+add_action('save_post', 'apkcorner_revalidate_nextjs', 10, 2);
 add_action('deleted_post', function ($post_id) {
     wp_remote_post(
-        add_query_arg('secret', MACROKHA_REVALIDATE_SECRET, MACROKHA_REVALIDATE_URL),
+        add_query_arg('secret', APKCORNER_REVALIDATE_SECRET, APKCORNER_REVALIDATE_URL),
         ['timeout' => 5, 'headers' => ['Content-Type' => 'application/json'], 'body' => '{}']
     );
 });
 
 // ─── 4. Redirect public WP to Next.js (ONLY after Next.js is live on main domain)
-// Enable this when WordPress moves to cms.teenpattiapks.com.pk:
+// Enable this when WordPress moves to cms.apkcorner.com.pk:
 //
 // add_action('template_redirect', function () {
 //     if (is_admin() || wp_doing_ajax() || defined('REST_REQUEST')) return;
 //     $path = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
-//     wp_redirect('https://teenpattiapks.com.pk' . $path, 301);
+//     wp_redirect('https://apkcorner.com.pk' . $path, 301);
 //     exit;
 // });
 

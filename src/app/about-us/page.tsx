@@ -4,7 +4,7 @@ import { buildSiteMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildSiteMetadata(
   "About Us",
-  "Learn about Teen Patti APKs — Pakistan's independent guide for Teen Patti APK downloads, earning tips, and honest game reviews.",
+  "Learn about APK Corner — Pakistan's independent guide for APK downloads, earning tips, and honest app reviews.",
   "/about-us"
 );
 
@@ -15,18 +15,18 @@ export default function AboutUsPage() {
       description="Who we are and what we stand for."
     >
       <p>
-        <strong>Teen Patti APKs</strong> (teenpattiapks.com.pk) is an independent
-        editorial website created to serve players in Pakistan who want reliable
-        information about Teen Patti and earning game applications.
+        <strong>APK Corner</strong> (apkcorner.com.pk) is an independent
+        editorial website created to serve users in Pakistan who want reliable
+        information about mobile apps, APK downloads, and earning game applications.
       </p>
-      <h2 className="text-xl font-semibold text-zinc-900">Our Mission</h2>
+      <h2 className="text-xl font-semibold text-foreground">Our Mission</h2>
       <p>
         We publish clear, well-researched guides that help users safely download
         APK files, understand in-app earning mechanics, and navigate withdrawal
         options such as JazzCash and Easypaisa. Our goal is transparency — not
         hype.
       </p>
-      <h2 className="text-xl font-semibold text-zinc-900">What We Do</h2>
+      <h2 className="text-xl font-semibold text-foreground">What We Do</h2>
       <ul className="list-disc space-y-2 pl-6">
         <li>Publish APK download and installation guides</li>
         <li>Review earning apps with honest pros and cons</li>
@@ -34,7 +34,7 @@ export default function AboutUsPage() {
         <li>Update content when apps change terms or features</li>
         <li>Promote responsible gaming practices</li>
       </ul>
-      <h2 className="text-xl font-semibold text-zinc-900">What We Don&apos;t Do</h2>
+      <h2 className="text-xl font-semibold text-foreground">What We Don&apos;t Do</h2>
       <ul className="list-disc space-y-2 pl-6">
         <li>We do not operate or host any gambling games</li>
         <li>We do not process deposits or withdrawals</li>
@@ -43,11 +43,11 @@ export default function AboutUsPage() {
       </ul>
       <p>
         For more about our team and editorial standards, visit our{" "}
-        <a href="/who-we-are" className="text-emerald-600 hover:underline">
+        <a href="/who-we-are" className="text-accent-bright hover:underline">
           Who We Are
         </a>{" "}
         page or{" "}
-        <a href="/contact-us" className="text-emerald-600 hover:underline">
+        <a href="/contact-us" className="text-accent-bright hover:underline">
           get in touch
         </a>
         .

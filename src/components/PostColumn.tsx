@@ -23,18 +23,18 @@ export default function PostColumn({
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
         <div className="min-w-0">
           <h2 className="text-base font-bold text-white sm:text-lg">{title}</h2>
-          <p className="mt-0.5 text-xs text-zinc-500">{description}</p>
+          <p className="mt-0.5 text-xs text-muted-dim">{description}</p>
         </div>
         <Link
           href={`/category/${categorySlug}`}
-          className="shrink-0 text-xs font-medium text-emerald-400 hover:text-emerald-300"
+          className="shrink-0 text-xs font-medium text-accent-bright hover:text-white"
         >
           View all →
         </Link>
       </div>
 
       {posts.length === 0 ? (
-        <p className="rounded-lg border border-zinc-800 bg-zinc-800/20 px-3 py-5 text-center text-xs text-zinc-500">
+        <p className="panel rounded-lg px-3 py-5 text-center text-xs text-muted">
           New guides coming soon.
         </p>
       ) : (

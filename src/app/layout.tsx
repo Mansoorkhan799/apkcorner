@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistSans.variable} h-full antialiased`}>
       <body
-        className={`${geistSans.className} min-h-full overflow-x-hidden flex flex-col bg-zinc-900 text-zinc-100`}
+        className={`${geistSans.className} min-h-full overflow-x-hidden flex flex-col bg-background-top text-body`}
       >
         <JsonLd data={buildSiteGraph()} />
         {children}

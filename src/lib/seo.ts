@@ -3,13 +3,13 @@ import type { WPPost } from "@/types/wordpress";
 import { getFeaturedImage, getWordPressOrigin, stripHtml } from "@/lib/wordpress";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? "Teen Patti APKs";
+const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? "APK Corner";
 const SITE_TITLE =
   process.env.NEXT_PUBLIC_SITE_TITLE ??
-  "Teen Patti APKs - The Hub of Pakistani Apps and Games";
+  "APK Corner - The Hub of Pakistani Apps and Games";
 const SITE_DESCRIPTION =
   process.env.NEXT_PUBLIC_SITE_DESCRIPTION ??
-  "TeenPattiAPKs is a platform where you can find the latest Teen Patti APK files, and Games. We Ensure that all files shared are safe and secure.";
+  "APKCorner is a platform where you can find the latest APK files, apps, and games. We ensure that all files shared are safe and secure.";
 
 export const siteIcons: Metadata["icons"] = {
   icon: [

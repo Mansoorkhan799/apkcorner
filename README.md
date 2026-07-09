@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# APK Corner (apkcorner.com.pk)
+
+Next.js frontend for [apkcorner.com.pk](https://apkcorner.com.pk) — a headless WordPress site publishing APK guides, app reviews, and earning tips for Pakistan.
 
 ## Getting Started
 
-First, run the development server:
+Copy the environment template and set your values:
+
+```bash
+cp .env.example .env.local
+```
+
+Required variables:
+
+- `NEXT_PUBLIC_SITE_URL` — `https://apkcorner.com.pk`
+- `NEXT_PUBLIC_SITE_NAME` — `APK Corner`
+- `WORDPRESS_API_URL` — WordPress REST API endpoint
+- `REVALIDATE_SECRET` — shared secret for on-demand cache revalidation
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to preview the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## WordPress Integration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+WordPress theme files live in `wordpress/kadence-child-teenpatti/`. The standalone setup snippet is in `wordpress/apkcorner-headless.php`.
 
-## Learn More
+## Deploy
 
-To learn more about Next.js, take a look at the following resources:
+Build for production:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+npm start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Set all environment variables on your hosting platform (e.g. Vercel) before deploying.

@@ -1,6 +1,6 @@
 <?php
 /**
- * Kadence Child Theme — Teen Patti APKs
+ * Kadence Child Theme — APK Corner
  * Headless WordPress integration for Next.js frontend.
  */
 
@@ -45,8 +45,8 @@ add_action('rest_api_init', function () {
     add_filter('rest_pre_serve_request', function ($value) {
         $allowed_origins = [
             'http://localhost:3000',
-            'https://teenpattiapks.com.pk',
-            'https://www.teenpattiapks.com.pk',
+            'https://apkcorner.com.pk',
+            'https://www.apkcorner.com.pk',
         ];
 
         $origin = get_http_origin();
@@ -62,10 +62,10 @@ add_action('rest_api_init', function () {
 
 // ─── 3. Revalidate Next.js on publish/update ────────────────────────────────
 
-define('MACROKHA_REVALIDATE_URL', 'https://teenpattiapks.com.pk/api/revalidate');
-define('MACROKHA_REVALIDATE_SECRET', 'be22531463ffb475f1db5710bf51a7110e26117b8fb004c0');
+define('APKCORNER_REVALIDATE_URL', 'https://apkcorner.com.pk/api/revalidate');
+define('APKCORNER_REVALIDATE_SECRET', 'be22531463ffb475f1db5710bf51a7110e26117b8fb004c0');
 
-function macrokha_revalidate_nextjs($post_id, $post) {
+function apkcorner_revalidate_nextjs($post_id, $post) {
     if (wp_is_post_revision($post_id) || $post->post_status !== 'publish') {
         return;
     }
@@ -75,7 +75,7 @@ function macrokha_revalidate_nextjs($post_id, $post) {
     }
 
     wp_remote_post(
-        add_query_arg('secret', MACROKHA_REVALIDATE_SECRET, MACROKHA_REVALIDATE_URL),
+        add_query_arg('secret', APKCORNER_REVALIDATE_SECRET, APKCORNER_REVALIDATE_URL),
         [
             'timeout' => 5,
             'headers' => ['Content-Type' => 'application/json'],
@@ -84,10 +84,10 @@ function macrokha_revalidate_nextjs($post_id, $post) {
     );
 }
 
-add_action('save_post', 'macrokha_revalidate_nextjs', 10, 2);
+add_action('save_post', 'apkcorner_revalidate_nextjs', 10, 2);
 add_action('deleted_post', function ($post_id) {
     wp_remote_post(
-        add_query_arg('secret', MACROKHA_REVALIDATE_SECRET, MACROKHA_REVALIDATE_URL),
+        add_query_arg('secret', APKCORNER_REVALIDATE_SECRET, APKCORNER_REVALIDATE_URL),
         ['timeout' => 5, 'headers' => ['Content-Type' => 'application/json'], 'body' => '{}']
     );
 });

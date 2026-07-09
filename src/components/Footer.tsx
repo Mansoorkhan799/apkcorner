@@ -24,7 +24,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-auto border-t border-zinc-800/80 bg-zinc-900/50 text-zinc-300">
+    <footer className="mt-auto border-t border-border/80 bg-background/90 text-body">
       <div className="mx-auto max-w-6xl px-5 py-10 sm:px-6 sm:py-14">
         <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           <div className="sm:col-span-2 lg:col-span-1">
@@ -38,20 +38,20 @@ export default function Footer() {
               />
               <span className="text-lg font-bold text-white">{getSiteName()}</span>
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-zinc-400">
-              Pakistan&apos;s trusted source for Teen Patti APK downloads, earning guides,
-              and verified game reviews.
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
+              Pakistan&apos;s trusted source for APK downloads, earning guides,
+              and verified app reviews from apkcorner.com.pk.
             </p>
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted">
               Guides
             </p>
             <ul className="mt-4 space-y-2.5 text-sm">
               {footerLinks.guides.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="hover:text-emerald-400 transition-colors">
+                  <Link href={link.href} className="hover:text-accent-bright transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -60,13 +60,13 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted">
               Company
             </p>
             <ul className="mt-4 space-y-2.5 text-sm">
               {footerLinks.company.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="hover:text-emerald-400 transition-colors">
+                  <Link href={link.href} className="hover:text-accent-bright transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -75,13 +75,13 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+            <p className="text-xs font-semibold uppercase tracking-wider text-muted">
               Legal
             </p>
             <ul className="mt-4 space-y-2.5 text-sm">
               {footerLinks.legal.map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="hover:text-emerald-400 transition-colors">
+                  <Link href={link.href} className="hover:text-accent-bright transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -90,11 +90,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-4 border-t border-zinc-800 pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-zinc-500">
+        <div className="mt-12 flex flex-col gap-4 border-t border-border/80 pt-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-muted">
             © {year} {getSiteName()}. All rights reserved.
           </p>
-          <p className="text-xs text-zinc-600">
+          <p className="text-xs text-muted-dim">
             18+ only · Play responsibly · Not affiliated with game developers
           </p>
         </div>
