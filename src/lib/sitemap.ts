@@ -4,7 +4,7 @@ import {
   getAllPostsWithMedia,
   getCategories,
 } from "@/lib/wordpress";
-import { getFeaturedImage, stripHtml } from "@/lib/wordpress-utils";
+import { getFeaturedImage } from "@/lib/wordpress-utils";
 
 export function getSitemapBaseUrl(): string {
   return getSiteUrl().replace(/\/$/, "");
@@ -123,8 +123,19 @@ export async function buildPagesSitemapEntries() {
 
 export type ImageSitemapEntry = {
   loc: string;
-  images: Array<{ loc: string; title?: string; caption?: string }>;
+  images: Array<{ loc: string }>;
 };
+
+/** Serve WordPress media via the public site domain for image sitemap / SEO. */
+export function toPublicMediaUrl(url: string, siteUrl: string): string {
+  try {
+    const parsed = new URL(url);
+    if (!parsed.pathname.startsWith("/wp-content/")) return url;
+    return `${siteUrl.replace(/\/$/, "")}${parsed.pathname}`;
+  } catch {
+    return url;
+  }
+}
 
 export async function buildImageSitemapEntries(): Promise<ImageSitemapEntry[]> {
   const siteUrl = getSitemapBaseUrl();
@@ -135,27 +146,20 @@ export async function buildImageSitemapEntries(): Promise<ImageSitemapEntry[]> {
     return posts
       .map((post) => {
         const featured = getFeaturedImage(post);
-        const title = stripHtml(post.title.rendered);
-        const caption = stripHtml(post.excerpt.rendered) || title;
         const contentImages = extractContentImageUrls(post.content.rendered);
 
         const images: ImageSitemapEntry["images"] = [];
         const seen = new Set<string>();
 
-        if (featured?.url) {
-          seen.add(featured.url);
-          images.push({
-            loc: featured.url,
-            title: featured.alt || title,
-            caption,
-          });
-        }
+        const pushImage = (rawUrl: string) => {
+          const loc = toPublicMediaUrl(rawUrl, siteUrl);
+          if (seen.has(loc)) return;
+          seen.add(loc);
+          images.push({ loc });
+        };
 
-        for (const url of contentImages) {
-          if (seen.has(url)) continue;
-          seen.add(url);
-          images.push({ loc: url, title, caption });
-        }
+        if (featured?.url) pushImage(featured.url);
+        for (const url of contentImages) pushImage(url);
 
         if (images.length === 0) return null;
 
@@ -196,20 +200,15 @@ ${urls}
 }
 
 export function renderImageUrlset(entries: ImageSitemapEntry[]): string {
+  // Minimal Google image sitemap format — only required tags (no lastmod/title/caption).
   const urls = entries
     .map((entry) => {
       const images = entry.images
-        .map((image) => {
-          const title = image.title
-            ? `\n      <image:title>${escapeXml(image.title)}</image:title>`
-            : "";
-          const caption = image.caption
-            ? `\n      <image:caption>${escapeXml(image.caption)}</image:caption>`
-            : "";
-          return `    <image:image>
-      <image:loc>${escapeXml(image.loc)}</image:loc>${title}${caption}
-    </image:image>`;
-        })
+        .map(
+          (image) => `    <image:image>
+      <image:loc>${escapeXml(image.loc)}</image:loc>
+    </image:image>`
+        )
         .join("\n");
 
       return `  <url>

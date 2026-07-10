@@ -28,6 +28,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/wp-content/:path*",
+        destination: `https://${wordpressHostname}/wp-content/:path*`,
+      },
+    ];
+  },
   async headers() {
     return [
       {
