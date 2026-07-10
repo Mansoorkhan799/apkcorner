@@ -123,7 +123,6 @@ export async function buildPagesSitemapEntries() {
 
 export type ImageSitemapEntry = {
   loc: string;
-  lastmod: string;
   images: Array<{ loc: string; title?: string; caption?: string }>;
 };
 
@@ -162,7 +161,6 @@ export async function buildImageSitemapEntries(): Promise<ImageSitemapEntry[]> {
 
         return {
           loc: `${siteUrl}/${post.slug}`,
-          lastmod: formatSitemapLastmod(post.modified || post.date),
           images,
         };
       })
@@ -216,7 +214,6 @@ export function renderImageUrlset(entries: ImageSitemapEntry[]): string {
 
       return `  <url>
     <loc>${escapeXml(entry.loc)}</loc>
-    <lastmod>${escapeXml(entry.lastmod)}</lastmod>
 ${images}
   </url>`;
     })
