@@ -14,7 +14,7 @@ Required variables:
 
 - `NEXT_PUBLIC_SITE_URL` — `https://apkcorner.com.pk`
 - `NEXT_PUBLIC_SITE_NAME` — `APK Corner`
-- `WORDPRESS_API_URL` — WordPress REST API endpoint
+- `WORDPRESS_API_URL` — `https://ams.apkcorner.com.pk/wp-json`
 - `REVALIDATE_SECRET` — shared secret for on-demand cache revalidation
 
 Run the development server:

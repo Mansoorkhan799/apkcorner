@@ -4,8 +4,8 @@
  *
  * Add to Kadence child theme functions.php (or require this file).
  *
- * Phase 1 (now):  WordPress on apkcorner.com.pk — write & preview content
- * Phase 2 (later): Move WP to cms.apkcorner.com.pk, Next.js on main domain
+ * Phase 1 (now):  WordPress on ams.apkcorner.com.pk — write & preview content
+ * Phase 2 (later): Keep WP on ams.apkcorner.com.pk, Next.js on main domain
  *
  * Plugins needed: Kadence Blocks, Rank Math SEO
  */
@@ -85,7 +85,7 @@ add_action('deleted_post', function ($post_id) {
 });
 
 // ─── 4. Redirect public WP to Next.js (ONLY after Next.js is live on main domain)
-// Enable this when WordPress moves to cms.apkcorner.com.pk:
+// Enable this when WordPress stays on ams.apkcorner.com.pk:
 //
 // add_action('template_redirect', function () {
 //     if (is_admin() || wp_doing_ajax() || defined('REST_REQUEST')) return;
