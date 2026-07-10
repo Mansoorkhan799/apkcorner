@@ -65,6 +65,28 @@ add_action('rest_api_init', function () {
 define('APKCORNER_REVALIDATE_URL', 'https://apkcorner.com.pk/api/revalidate');
 define('APKCORNER_REVALIDATE_SECRET', 'be22531463ffb475f1db5710bf51a7110e26117b8fb004c0');
 
+function apkcorner_send_revalidate($payload = []) {
+    $response = wp_remote_post(
+        add_query_arg('secret', APKCORNER_REVALIDATE_SECRET, APKCORNER_REVALIDATE_URL),
+        [
+            'timeout'  => 15,
+            'blocking' => true,
+            'headers'  => ['Content-Type' => 'application/json'],
+            'body'     => wp_json_encode($payload),
+        ]
+    );
+
+    if (is_wp_error($response)) {
+        error_log('APK Corner revalidate failed: ' . $response->get_error_message());
+        return;
+    }
+
+    $code = wp_remote_retrieve_response_code($response);
+    if ($code < 200 || $code >= 300) {
+        error_log('APK Corner revalidate HTTP ' . $code . ': ' . wp_remote_retrieve_body($response));
+    }
+}
+
 function apkcorner_revalidate_nextjs($post_id, $post) {
     if (wp_is_post_revision($post_id) || $post->post_status !== 'publish') {
         return;
@@ -74,20 +96,28 @@ function apkcorner_revalidate_nextjs($post_id, $post) {
         return;
     }
 
-    wp_remote_post(
-        add_query_arg('secret', APKCORNER_REVALIDATE_SECRET, APKCORNER_REVALIDATE_URL),
-        [
-            'timeout' => 5,
-            'headers' => ['Content-Type' => 'application/json'],
-            'body'    => wp_json_encode(['slug' => $post->post_name]),
-        ]
-    );
+    $categories = [];
+    if ($post->post_type === 'post') {
+        $terms = get_the_terms($post_id, 'category');
+        if (is_array($terms)) {
+            foreach ($terms as $term) {
+                $categories[] = $term->slug;
+            }
+        }
+    }
+
+    apkcorner_send_revalidate([
+        'slug'       => $post->post_name,
+        'categories' => $categories,
+    ]);
 }
 
-add_action('save_post', 'apkcorner_revalidate_nextjs', 10, 2);
-add_action('deleted_post', function ($post_id) {
-    wp_remote_post(
-        add_query_arg('secret', APKCORNER_REVALIDATE_SECRET, APKCORNER_REVALIDATE_URL),
-        ['timeout' => 5, 'headers' => ['Content-Type' => 'application/json'], 'body' => '{}']
-    );
+add_action('save_post', 'apkcorner_revalidate_nextjs', 20, 2);
+add_action('transition_post_status', function ($new_status, $old_status, $post) {
+    if ($new_status === 'publish' && $old_status !== 'publish' && $post instanceof WP_Post) {
+        apkcorner_revalidate_nextjs($post->ID, $post);
+    }
+}, 20, 3);
+add_action('deleted_post', function () {
+    apkcorner_send_revalidate([]);
 });

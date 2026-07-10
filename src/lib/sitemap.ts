@@ -19,11 +19,42 @@ export function escapeXml(value: string): string {
     .replace(/'/g, "&apos;");
 }
 
-export function xmlResponse(body: string, revalidate = 3600): Response {
+/**
+ * Google requires W3C Datetime for <lastmod>.
+ * WordPress REST dates are often `YYYY-MM-DDTHH:mm:ss` with no timezone — GSC flags those as invalid.
+ * Prefer date-only `YYYY-MM-DD` (valid and unambiguous).
+ */
+export function formatSitemapLastmod(value?: string | Date | null): string {
+  if (!value) {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  if (value instanceof Date) {
+    if (Number.isNaN(value.getTime())) {
+      return new Date().toISOString().slice(0, 10);
+    }
+    return value.toISOString().slice(0, 10);
+  }
+
+  const trimmed = value.trim();
+  const dateOnly = trimmed.match(/^(\d{4}-\d{2}-\d{2})/);
+  if (dateOnly) {
+    return dateOnly[1];
+  }
+
+  const parsed = new Date(trimmed);
+  if (!Number.isNaN(parsed.getTime())) {
+    return parsed.toISOString().slice(0, 10);
+  }
+
+  return new Date().toISOString().slice(0, 10);
+}
+
+export function xmlResponse(body: string, revalidate = 60): Response {
   return new Response(body, {
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": `public, s-maxage=${revalidate}, stale-while-revalidate`,
+      "Cache-Control": `public, s-maxage=${revalidate}, stale-while-revalidate=${revalidate}`,
     },
   });
 }
@@ -44,7 +75,7 @@ export function extractContentImageUrls(html: string): string[] {
 
 export async function buildPagesSitemapEntries() {
   const siteUrl = getSitemapBaseUrl();
-  const now = new Date().toISOString();
+  const now = formatSitemapLastmod(new Date());
 
   const staticRoutes = [
     { loc: siteUrl, lastmod: now, changefreq: "daily", priority: "1.0" },
@@ -131,7 +162,7 @@ export async function buildImageSitemapEntries(): Promise<ImageSitemapEntry[]> {
 
         return {
           loc: `${siteUrl}/${post.slug}`,
-          lastmod: post.modified || post.date || new Date().toISOString(),
+          lastmod: formatSitemapLastmod(post.modified || post.date),
           images,
         };
       })
