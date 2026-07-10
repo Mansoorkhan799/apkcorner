@@ -1,12 +1,18 @@
 import type { WPCategory, WPPost } from "@/types/wordpress";
+import {
+  fixContentUrls as fixContentUrlsWithOrigin,
+  getFeaturedImage,
+  getPostCategories,
+  stripHtml,
+} from "@/lib/wordpress-utils";
+
+export {
+  getFeaturedImage,
+  getPostCategories,
+  stripHtml,
+} from "@/lib/wordpress-utils";
 
 const WP_API_URL = process.env.WORDPRESS_API_URL;
-
-if (!WP_API_URL) {
-  console.warn(
-    "WORDPRESS_API_URL is not set. Add it to .env.local to connect to WordPress."
-  );
-}
 
 const DEFAULT_REVALIDATE = 3600;
 
@@ -38,6 +44,10 @@ async function wpFetch<T>(
 export function getWordPressOrigin(): string {
   if (!WP_API_URL) return "";
   return new URL(WP_API_URL).origin;
+}
+
+export function fixContentUrls(html: string): string {
+  return fixContentUrlsWithOrigin(html, getWordPressOrigin());
 }
 
 export async function getPosts(
@@ -99,40 +109,4 @@ export async function getCategoryBySlug(slug: string): Promise<WPCategory | null
 
 export async function getPostsByCategory(categoryId: number): Promise<WPPost[]> {
   return getPosts({ categories: categoryId, per_page: 20 });
-}
-
-export function getFeaturedImage(post: WPPost): {
-  url: string;
-  alt: string;
-  width?: number;
-  height?: number;
-} | null {
-  const media = post._embedded?.["wp:featuredmedia"]?.[0];
-  if (!media?.source_url) return null;
-
-  return {
-    url: media.source_url,
-    alt: media.alt_text || stripHtml(post.title.rendered),
-    width: media.media_details?.width,
-    height: media.media_details?.height,
-  };
-}
-
-export function getPostCategories(post: WPPost): WPCategory[] {
-  return post._embedded?.["wp:term"]?.[0] ?? [];
-}
-
-export function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, "").trim();
-}
-
-/** Rewrite relative WordPress URLs in content to absolute URLs */
-export function fixContentUrls(html: string): string {
-  const origin = getWordPressOrigin();
-  if (!origin) return html;
-
-  return html
-    .replace(/src="\/wp-content/g, `src="${origin}/wp-content`)
-    .replace(/href="\/wp-content/g, `href="${origin}/wp-content`)
-    .replace(/srcset="\/wp-content/g, `srcset="${origin}/wp-content`);
 }

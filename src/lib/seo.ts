@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { WPPost } from "@/types/wordpress";
-import { getFeaturedImage, getWordPressOrigin, stripHtml } from "@/lib/wordpress";
+import { getFeaturedImage, stripHtml } from "@/lib/wordpress-utils";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? "APK Corner";
@@ -106,5 +106,11 @@ export function getSiteUrl(): string {
 }
 
 export function getWordPressMediaOrigin(): string {
-  return getWordPressOrigin();
+  const apiUrl = process.env.WORDPRESS_API_URL;
+  if (!apiUrl) return "";
+  try {
+    return new URL(apiUrl).origin;
+  } catch {
+    return "";
+  }
 }
