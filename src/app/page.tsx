@@ -64,7 +64,7 @@ export default async function HomePage() {
 
   try {
     const [teenPattiCategory, earningGamesCategory] = await Promise.all([
-      getCategoryBySlug("teen-patti-apks"),
+      getCategoryBySlug("teen-patti-games"),
       getCategoryBySlug("new-earning-games"),
     ]);
 
@@ -168,9 +168,9 @@ export default async function HomePage() {
           ) : (
             <div className="grid gap-10 lg:grid-cols-2 lg:gap-12">
               <PostColumn
-                title="Teen Patti APKs"
+                title="Teen Patti Games"
                 description="Fresh downloads, earning tips, and game reviews"
-                categorySlug="teen-patti-apks"
+                categorySlug="teen-patti-games"
                 posts={teenPattiPosts}
               />
               <PostColumn

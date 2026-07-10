@@ -5,7 +5,7 @@ import { getSiteName } from "@/lib/seo";
 const footerLinks = {
   guides: [
     { href: "/blog", label: "All Guides" },
-    { href: "/category/teen-patti-apks", label: "Teen Patti APKs" },
+    { href: "/category/teen-patti-games", label: "Teen Patti Games" },
     { href: "/category/new-earning-games", label: "New Earning Games" },
   ],
   company: [
