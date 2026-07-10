@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import type { WPPost } from "@/types/wordpress";
 import {
+  cleanExcerpt,
   getFeaturedImage,
   getPostCategories,
   stripHtml,
@@ -16,7 +17,7 @@ export default function PostCard({ post, compact = false }: PostCardProps) {
   const featured = getFeaturedImage(post);
   const categories = getPostCategories(post);
   const title = stripHtml(post.title.rendered);
-  const excerpt = stripHtml(post.excerpt.rendered);
+  const excerpt = cleanExcerpt(post.excerpt.rendered);
 
   if (compact) {
     return (

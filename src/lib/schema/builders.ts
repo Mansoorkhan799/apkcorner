@@ -12,7 +12,7 @@ import {
   HOWTO_TITLE_PATTERN,
   SCHEMA_CONTEXT,
 } from "./constants";
-import { getFeaturedImage, stripHtml } from "@/lib/wordpress-utils";
+import { cleanExcerpt, getFeaturedImage, stripHtml } from "@/lib/wordpress-utils";
 import { getSiteDescription, getSiteName, getSiteUrl } from "@/lib/seo";
 
 type JsonLdObject = Record<string, unknown>;
@@ -268,7 +268,7 @@ export function buildPostSchemaGraph(
   const title = stripHtml(post.title.rendered);
   const description =
     post.rank_math?.description ||
-    stripHtml(post.excerpt.rendered) ||
+    cleanExcerpt(post.excerpt.rendered) ||
     title;
 
   const graph: JsonLdObject[] = [

@@ -4,6 +4,45 @@ export function stripHtml(html: string): string {
   return html.replace(/<[^>]*>/g, "").trim();
 }
 
+/** Decode common HTML entities left after stripHtml (e.g. &#8230; → …). */
+export function decodeHtmlEntities(text: string): string {
+  return text
+    .replace(/&#(\d+);/g, (_, n: string) =>
+      String.fromCharCode(Number(n))
+    )
+    .replace(/&#x([0-9a-f]+);/gi, (_, h: string) =>
+      String.fromCharCode(parseInt(h, 16))
+    )
+    .replace(/&hellip;/g, "…")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&apos;/g, "'");
+}
+
+/**
+ * Clean WordPress auto-excerpts: decode entities and drop a truncated
+ * trailing sentence (e.g. "… attractions of CX777 is…").
+ */
+export function cleanExcerpt(html: string): string {
+  let text = decodeHtmlEntities(stripHtml(html)).replace(/\s+/g, " ").trim();
+  if (!text) return "";
+
+  const hadEllipsis = /…$/.test(text) || /\.\.\.$/.test(text);
+  if (hadEllipsis) {
+    text = text.replace(/…$/, "").replace(/\.\.\.$/, "").trim();
+    const sentences = text.split(/(?<=[.!?])\s+/);
+    if (sentences.length > 1 && !/[.!?]$/.test(sentences[sentences.length - 1]!)) {
+      sentences.pop();
+      text = sentences.join(" ");
+    }
+  }
+
+  return text.trim();
+}
+
 export function getFeaturedImage(post: WPPost): {
   url: string;
   alt: string;

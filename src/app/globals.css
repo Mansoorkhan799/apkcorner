@@ -394,7 +394,15 @@ body {
 
 .wp-content.entry-content a.kb-button .kt-btn-inner-text,
 .wp-content.entry-content a.kt-button .kt-btn-inner-text {
-  color: inherit;
+  /* Kadence gradient text uses --global-palette* vars that don't exist
+     headless — that leaves -webkit-text-fill-color: transparent with no
+     visible gradient, so the label disappears while the icon still shows. */
+  color: #04110a !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+  -webkit-text-fill-color: #04110a !important;
 }
 
 .wp-content.entry-content .kb-svg-icon-wrap {

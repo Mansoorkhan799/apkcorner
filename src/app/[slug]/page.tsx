@@ -13,6 +13,7 @@ import {
   getFeaturedImage,
   getPostBySlug,
   getPostCategories,
+  cleanExcerpt,
   stripHtml,
 } from "@/lib/wordpress";
 
@@ -59,7 +60,7 @@ export default async function PostPage({ params }: PageProps) {
   const featured = getFeaturedImage(post);
   const categories = getPostCategories(post);
   const postTitle = stripHtml(post.title.rendered);
-  const excerpt = stripHtml(post.excerpt.rendered);
+  const excerpt = cleanExcerpt(post.excerpt.rendered);
 
   const breadcrumbs = [
     { label: getSiteName(), href: "/" },
@@ -87,7 +88,11 @@ export default async function PostPage({ params }: PageProps) {
         />
 
         <FadeIn delay={0.12}>
-          <WordPressContent html={post.content.rendered} skipLeadingH1 />
+          <WordPressContent
+            html={post.content.rendered}
+            skipLeadingH1
+            excerpt={excerpt || undefined}
+          />
         </FadeIn>
       </article>
     </SiteLayout>

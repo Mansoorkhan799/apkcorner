@@ -7,6 +7,7 @@ import {
 } from "@/lib/wordpress-utils";
 
 export {
+  cleanExcerpt,
   getFeaturedImage,
   getPostCategories,
   stripHtml,

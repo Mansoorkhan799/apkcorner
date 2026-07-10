@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import type { WPPost } from "@/types/wordpress";
-import { getFeaturedImage, stripHtml } from "@/lib/wordpress-utils";
+import {
+  cleanExcerpt,
+  getFeaturedImage,
+  stripHtml,
+} from "@/lib/wordpress-utils";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const SITE_NAME = process.env.NEXT_PUBLIC_SITE_NAME ?? "APK Corner";
@@ -30,7 +34,7 @@ export function buildPostMetadata(post: WPPost, path: string): Metadata {
     SITE_NAME;
   const description =
     post.rank_math?.description ||
-    stripHtml(post.excerpt.rendered) ||
+    cleanExcerpt(post.excerpt.rendered) ||
     undefined;
 
   const featured = getFeaturedImage(post);

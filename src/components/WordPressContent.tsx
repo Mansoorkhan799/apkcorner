@@ -1,5 +1,8 @@
 import { fixContentUrls } from "@/lib/wordpress";
-import { stripLeadingH1 } from "@/lib/schema/parse-content";
+import {
+  stripLeadingH1,
+  stripLeadingParagraphMatchingExcerpt,
+} from "@/lib/schema/parse-content";
 import AnimatedWordPressContent from "@/components/AnimatedWordPressContent";
 
 interface WordPressContentProps {
@@ -7,6 +10,8 @@ interface WordPressContentProps {
   className?: string;
   /** Skip first H1 when title is rendered in the post hero banner */
   skipLeadingH1?: boolean;
+  /** Hero excerpt — used to drop a duplicate intro paragraph from the body */
+  excerpt?: string;
 }
 
 /** Remove Kadence accordion inline styles (light theme) so our dark styles apply. */
@@ -26,9 +31,11 @@ export default function WordPressContent({
   html,
   className = "",
   skipLeadingH1: shouldSkipH1 = false,
+  excerpt,
 }: WordPressContentProps) {
   let content = fixContentUrls(html);
   if (shouldSkipH1) content = stripLeadingH1(content);
+  if (excerpt) content = stripLeadingParagraphMatchingExcerpt(content, excerpt);
   content = stripAccordionInlineStyles(content);
 
   return (
