@@ -124,10 +124,8 @@ export function extractFaqItems(html: string): ParsedFaqItem[] {
     ".wp-block-kadence-accordion .kt-blocks-accordion-header, .wp-block-kadence-accordion .kt-accordion-title, .kb-accordion-header"
   ).each((_, header) => {
     const question = cleanText($(header).text());
-    const panel =
-      $(header).closest(".kt-accordion-inner-wrap").find(".kt-accordion-panel-inner").first() ||
-      $(header).next(".kt-accordion-panel, .accordion-panel");
-
+    const pane = $(header).closest(".wp-block-kadence-pane, .kt-accordion-pane");
+    const panel = pane.find(".kt-accordion-panel-inner").first();
     const answer = cleanText(panel.text());
     if (question && answer.length > 10) {
       items.push({ question, answer });

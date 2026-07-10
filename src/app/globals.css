@@ -368,3 +368,113 @@ body {
   margin-right: auto;
   text-align: center;
 }
+
+/* Kadence Accordion / FAQ — headless (no Kadence JS/CSS) */
+.wp-content.entry-content .wp-block-kadence-accordion {
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.wp-content.entry-content .kt-accordion-inner-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.wp-content.entry-content .wp-block-kadence-pane,
+.wp-content.entry-content .kt-accordion-pane {
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.wp-content.entry-content .kt-accordion-header-wrap {
+  margin: 0;
+}
+
+.wp-content.entry-content .kt-blocks-accordion-header {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1.1rem;
+  border: none;
+  background: var(--surface-raised);
+  color: var(--foreground);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.wp-content.entry-content .kt-blocks-accordion-header:hover {
+  background: var(--surface);
+  color: var(--accent-bright);
+}
+
+.wp-content.entry-content .kt-blocks-accordion-title-wrap {
+  flex: 1;
+}
+
+.wp-content.entry-content .kt-blocks-accordion-icon-trigger {
+  position: relative;
+  display: inline-block;
+  width: 0.85rem;
+  height: 0.85rem;
+  flex-shrink: 0;
+}
+
+.wp-content.entry-content .kt-blocks-accordion-icon-trigger::before,
+.wp-content.entry-content .kt-blocks-accordion-icon-trigger::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--accent);
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.wp-content.entry-content .kt-blocks-accordion-icon-trigger::before {
+  width: 100%;
+  height: 2px;
+  transform: translate(-50%, -50%);
+}
+
+.wp-content.entry-content .kt-blocks-accordion-icon-trigger::after {
+  width: 2px;
+  height: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.wp-content.entry-content .kt-accordion-pane-active .kt-blocks-accordion-icon-trigger::after {
+  opacity: 0;
+}
+
+.wp-content.entry-content .kt-accordion-panel {
+  overflow: hidden;
+}
+
+.wp-content.entry-content .kt-accordion-panel-hidden {
+  display: none;
+}
+
+.wp-content.entry-content .kt-accordion-panel-active {
+  display: block;
+}
+
+.wp-content.entry-content .kt-accordion-panel-inner {
+  padding: 1rem 1.1rem 1.15rem;
+  color: var(--body);
+  border-top: 1px solid var(--border);
+}
+
+.wp-content.entry-content .kt-accordion-panel-inner > *:first-child {
+  margin-top: 0;
+}
+
+.wp-content.entry-content .kt-accordion-panel-inner > *:last-child {
+  margin-bottom: 0;
+}

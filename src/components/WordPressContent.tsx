@@ -1,5 +1,6 @@
 import { fixContentUrls } from "@/lib/wordpress";
 import { stripLeadingH1 } from "@/lib/schema/parse-content";
+import KadenceAccordion from "@/components/KadenceAccordion";
 
 interface WordPressContentProps {
   html: string;
@@ -8,9 +9,16 @@ interface WordPressContentProps {
   skipLeadingH1?: boolean;
 }
 
+/** Remove Kadence accordion inline styles (light theme) so our dark styles apply. */
+function stripAccordionInlineStyles(html: string): string {
+  return html.replace(
+    /<style\b[^>]*>[\s\S]*?\.kt-accordion[\s\S]*?<\/style>/gi,
+    ""
+  );
+}
+
 /**
- * Renders WordPress/Kadence block HTML exactly as stored in the CMS.
- * Headings (H1–H6), images, lists, and block structure are never modified.
+ * Renders WordPress/Kadence block HTML with working accordion FAQs.
  */
 export default function WordPressContent({
   html,
@@ -19,11 +27,12 @@ export default function WordPressContent({
 }: WordPressContentProps) {
   let content = fixContentUrls(html);
   if (shouldSkipH1) content = stripLeadingH1(content);
+  content = stripAccordionInlineStyles(content);
 
   return (
-    <div
+    <KadenceAccordion
+      html={content}
       className={`wp-content entry-content ${className}`}
-      dangerouslySetInnerHTML={{ __html: content }}
     />
   );
 }
