@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import SiteLayout from "@/components/SiteLayout";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import WordPressContent from "@/components/WordPressContent";
+import AnimatedPostHero from "@/components/AnimatedPostHero";
 import JsonLd from "@/components/JsonLd";
 import FadeIn from "@/components/motion/FadeIn";
 import { buildPostMetadata, getSiteName } from "@/lib/seo";
@@ -73,71 +73,21 @@ export default async function PostPage({ params }: PageProps) {
     <SiteLayout>
       <JsonLd data={schemaGraph} />
       <article className="mx-auto max-w-4xl px-5 py-8 sm:px-6 sm:py-10">
-        <Breadcrumbs items={breadcrumbs} />
-
         <FadeIn>
-        {/* Card-style hero — title left, compact image right */}
-        <header className="panel mb-6 rounded-2xl p-4 sm:mb-8 sm:p-6">
-          <div className="flex flex-col-reverse gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-5">
-            <div className="min-w-0 flex-1">
-              <h1 className="text-xl font-bold leading-tight text-white sm:text-2xl md:text-3xl">
-                {postTitle}
-              </h1>
-              {excerpt && (
-                <p className="mt-3 text-sm leading-relaxed text-body sm:text-base">
-                  {excerpt}
-                </p>
-              )}
-              <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted sm:text-sm">
-                <time dateTime={post.date}>
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </time>
-                {post.modified !== post.date && (
-                  <>
-                    <span aria-hidden="true">·</span>
-                    <span>
-                      Updated{" "}
-                      {new Date(post.modified).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </span>
-                  </>
-                )}
-                {categories.map((cat) => (
-                  <span
-                    key={cat.id}
-                    className="rounded-full border border-accent/40 bg-accent/15 px-2 py-0.5 text-xs font-medium text-accent-bright"
-                  >
-                    {cat.name}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {featured && (
-              <figure className="mx-auto shrink-0 sm:mx-0">
-                <Image
-                  src={featured.url}
-                  alt={featured.alt}
-                  width={160}
-                  height={160}
-                  className="h-28 w-28 rounded-xl object-cover sm:h-36 sm:w-36 sm:rounded-2xl"
-                  priority
-                />
-              </figure>
-            )}
-          </div>
-        </header>
+          <Breadcrumbs items={breadcrumbs} />
         </FadeIn>
 
-        <FadeIn delay={0.1}>
-        <WordPressContent html={post.content.rendered} skipLeadingH1 />
+        <AnimatedPostHero
+          title={postTitle}
+          excerpt={excerpt || undefined}
+          date={post.date}
+          modified={post.modified}
+          categories={categories}
+          featured={featured}
+        />
+
+        <FadeIn delay={0.12}>
+          <WordPressContent html={post.content.rendered} skipLeadingH1 />
         </FadeIn>
       </article>
     </SiteLayout>

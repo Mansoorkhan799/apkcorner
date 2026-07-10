@@ -1,6 +1,6 @@
 import { fixContentUrls } from "@/lib/wordpress";
 import { stripLeadingH1 } from "@/lib/schema/parse-content";
-import KadenceAccordion from "@/components/KadenceAccordion";
+import AnimatedWordPressContent from "@/components/AnimatedWordPressContent";
 
 interface WordPressContentProps {
   html: string;
@@ -18,7 +18,8 @@ function stripAccordionInlineStyles(html: string): string {
 }
 
 /**
- * Renders WordPress/Kadence block HTML with working accordion FAQs.
+ * Renders WordPress/Kadence block HTML with Framer Motion scroll reveals
+ * and working accordion FAQs — applies to every published post.
  */
 export default function WordPressContent({
   html,
@@ -30,7 +31,7 @@ export default function WordPressContent({
   content = stripAccordionInlineStyles(content);
 
   return (
-    <KadenceAccordion
+    <AnimatedWordPressContent
       html={content}
       className={`wp-content entry-content ${className}`}
     />
