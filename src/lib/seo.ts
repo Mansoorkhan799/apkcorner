@@ -106,11 +106,12 @@ export function getSiteUrl(): string {
 }
 
 export function getWordPressMediaOrigin(): string {
-  const apiUrl = process.env.WORDPRESS_API_URL;
-  if (!apiUrl) return "";
+  const apiUrl =
+    process.env.WORDPRESS_API_URL?.replace(/\/$/, "") ||
+    "https://ams.apkcorner.com.pk/wp-json";
   try {
     return new URL(apiUrl).origin;
   } catch {
-    return "";
+    return "https://ams.apkcorner.com.pk";
   }
 }

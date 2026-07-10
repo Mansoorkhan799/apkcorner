@@ -4,7 +4,7 @@ import PostColumn from "@/components/PostColumn";
 import SiteInfoTable from "@/components/SiteInfoTable";
 import FadeIn from "@/components/motion/FadeIn";
 import { StaggerContainer, StaggerItem } from "@/components/motion/Stagger";
-import { getCategoryBySlug, getPostsByCategory } from "@/lib/wordpress";
+import { getCategoryBySlug, getPosts, getPostsByCategory } from "@/lib/wordpress";
 
 export const revalidate = 3600;
 
@@ -79,8 +79,22 @@ export default async function HomePage() {
 
     teenPattiPosts = teenPatti.slice(0, 6);
     earningGamesPosts = earningGames.slice(0, 6);
-  } catch {
-    wpConnected = false;
+
+    // Fallback: if category queries returned nothing, still show latest posts
+    if (teenPattiPosts.length === 0 && earningGamesPosts.length === 0) {
+      const latest = await getPosts({ per_page: 6 });
+      earningGamesPosts = latest.slice(0, 6);
+    }
+  } catch (error) {
+    console.error("[homepage] WordPress fetch failed:", error);
+    try {
+      const latest = await getPosts({ per_page: 6 });
+      earningGamesPosts = latest.slice(0, 6);
+      wpConnected = latest.length > 0;
+    } catch (fallbackError) {
+      console.error("[homepage] WordPress fallback failed:", fallbackError);
+      wpConnected = false;
+    }
   }
 
   return (

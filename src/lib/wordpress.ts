@@ -12,7 +12,9 @@ export {
   stripHtml,
 } from "@/lib/wordpress-utils";
 
-const WP_API_URL = process.env.WORDPRESS_API_URL;
+const WP_API_URL =
+  process.env.WORDPRESS_API_URL?.replace(/\/$/, "") ||
+  "https://ams.apkcorner.com.pk/wp-json";
 
 const DEFAULT_REVALIDATE = 3600;
 
@@ -20,14 +22,14 @@ async function wpFetch<T>(
   path: string,
   options?: { revalidate?: number | false }
 ): Promise<T> {
-  if (!WP_API_URL) {
-    throw new Error("WORDPRESS_API_URL environment variable is not configured");
-  }
-
-  const url = `${WP_API_URL.replace(/\/$/, "")}${path}`;
+  const url = `${WP_API_URL}${path}`;
   const revalidate = options?.revalidate ?? DEFAULT_REVALIDATE;
 
   const response = await fetch(url, {
+    headers: {
+      Accept: "application/json",
+      "User-Agent": "APKCorner-NextJS/1.0",
+    },
     next:
       revalidate === false
         ? { revalidate: 0 }
@@ -35,15 +37,20 @@ async function wpFetch<T>(
   });
 
   if (!response.ok) {
-    throw new Error(`WordPress API error: ${response.status} ${response.statusText}`);
+    throw new Error(
+      `WordPress API error: ${response.status} ${response.statusText} (${url})`
+    );
   }
 
   return response.json() as Promise<T>;
 }
 
 export function getWordPressOrigin(): string {
-  if (!WP_API_URL) return "";
-  return new URL(WP_API_URL).origin;
+  try {
+    return new URL(WP_API_URL).origin;
+  } catch {
+    return "https://ams.apkcorner.com.pk";
+  }
 }
 
 export function fixContentUrls(html: string): string {

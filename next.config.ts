@@ -1,34 +1,32 @@
 import type { NextConfig } from "next";
 
-const wordpressUrl = process.env.WORDPRESS_API_URL ?? "";
-let wordpressHostname = "";
+const wordpressUrl =
+  process.env.WORDPRESS_API_URL?.replace(/\/$/, "") ||
+  "https://ams.apkcorner.com.pk/wp-json";
+let wordpressHostname = "ams.apkcorner.com.pk";
 
 try {
-  if (wordpressUrl) {
-    wordpressHostname = new URL(wordpressUrl).hostname;
-  }
+  wordpressHostname = new URL(wordpressUrl).hostname;
 } catch {
-  // Invalid URL at build time — images will be configured after .env.local is set
+  wordpressHostname = "ams.apkcorner.com.pk";
 }
 
 const nextConfig: NextConfig = {
   // Hide "X-Powered-By: Next.js"
   poweredByHeader: false,
   images: {
-    remotePatterns: wordpressHostname
-      ? [
-          {
-            protocol: "https",
-            hostname: wordpressHostname,
-            pathname: "/wp-content/**",
-          },
-          {
-            protocol: "http",
-            hostname: wordpressHostname,
-            pathname: "/wp-content/**",
-          },
-        ]
-      : [],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: wordpressHostname,
+        pathname: "/wp-content/**",
+      },
+      {
+        protocol: "http",
+        hostname: wordpressHostname,
+        pathname: "/wp-content/**",
+      },
+    ],
   },
   async headers() {
     return [
