@@ -14,6 +14,9 @@ export async function POST(request: NextRequest) {
 
     revalidatePath("/", "layout");
     revalidatePath("/blog");
+    revalidatePath("/sitemap-index.xml");
+    revalidatePath("/sitemap.xml");
+    revalidatePath("/image-sitemap.xml");
     revalidateTag("wordpress", "max");
 
     if (slug) {

@@ -1,5 +1,7 @@
+import Link from "next/link";
+
 const siteInfo = [
-  { label: "Website", value: "apkcorner.com.pk" },
+  { label: "Website", value: "apkcorner.com.pk", href: "/" },
   { label: "Platform", value: "Android" },
   { label: "Category", value: "APK Downloads" },
   { label: "Region", value: "Pakistan" },
@@ -14,7 +16,6 @@ export default function SiteInfoTable() {
     <div className="panel overflow-hidden rounded-2xl">
       <div className="panel-header px-4 py-3 sm:px-5">
         <p className="section-label">Site Overview</p>
-        <p className="mt-0.5 text-sm font-semibold text-foreground">apkcorner.com.pk</p>
       </div>
       <table className="w-full text-xs sm:text-sm">
         <tbody>
@@ -37,7 +38,16 @@ export default function SiteInfoTable() {
                   index % 2 === 0 ? "bg-surface" : "bg-surface-alt"
                 }`}
               >
-                {row.value}
+                {"href" in row && row.href ? (
+                  <Link
+                    href={row.href}
+                    className="text-accent-bright transition-colors hover:text-accent"
+                  >
+                    {row.value}
+                  </Link>
+                ) : (
+                  row.value
+                )}
               </td>
             </tr>
           ))}

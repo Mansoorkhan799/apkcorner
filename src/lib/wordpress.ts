@@ -96,6 +96,33 @@ export async function getAllPostSlugs(): Promise<string[]> {
   return slugs;
 }
 
+/** All published posts with embedded media (for image sitemaps). */
+export async function getAllPostsWithMedia(): Promise<WPPost[]> {
+  const all: WPPost[] = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore) {
+    try {
+      const posts = await wpFetch<WPPost[]>(
+        `/wp/v2/posts?per_page=100&page=${page}&_embed=1`
+      );
+
+      if (posts.length === 0) {
+        hasMore = false;
+      } else {
+        all.push(...posts);
+        page++;
+        if (posts.length < 100) hasMore = false;
+      }
+    } catch {
+      hasMore = false;
+    }
+  }
+
+  return all;
+}
+
 export async function getCategories(): Promise<WPCategory[]> {
   return wpFetch<WPCategory[]>("/wp/v2/categories?per_page=100");
 }
