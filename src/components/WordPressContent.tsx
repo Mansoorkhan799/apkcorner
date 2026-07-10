@@ -11,9 +11,10 @@ interface WordPressContentProps {
 
 /** Remove Kadence accordion inline styles (light theme) so our dark styles apply. */
 function stripAccordionInlineStyles(html: string): string {
-  return html.replace(
-    /<style\b[^>]*>[\s\S]*?\.kt-accordion[\s\S]*?<\/style>/gi,
-    ""
+  // Match each <style> block on its own. A previous regex spanned from the first
+  // <style> to a later .kt-accordion block and deleted the post body + images.
+  return html.replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, (block) =>
+    /\.kt-accordion/i.test(block) ? "" : block
   );
 }
 

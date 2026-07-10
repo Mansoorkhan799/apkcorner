@@ -96,23 +96,27 @@ export default function AnimatedWordPressContent({
       el.style.willChange = "opacity, transform";
     });
 
+    const reveal = (el: HTMLElement, index: number) => {
+      animate(
+        el,
+        { opacity: 1, y: 0 },
+        {
+          duration: 0.5,
+          delay: Math.min(index * 0.03, 0.24),
+          ease: easeOut,
+        }
+      ).then(() => {
+        el.style.willChange = "auto";
+      });
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           const el = entry.target as HTMLElement;
           const index = blocks.indexOf(el);
-          animate(
-            el,
-            { opacity: 1, y: 0 },
-            {
-              duration: 0.5,
-              delay: Math.min(index * 0.03, 0.24),
-              ease: easeOut,
-            }
-          ).then(() => {
-            el.style.willChange = "auto";
-          });
+          reveal(el, index);
           observer.unobserve(el);
         });
       },
@@ -121,8 +125,15 @@ export default function AnimatedWordPressContent({
 
     blocks.forEach((el) => observer.observe(el));
 
+    // Safety: never leave content stuck invisible if IO never fires
+    const fallback = window.setTimeout(() => {
+      blocks.forEach((el, index) => {
+        if (el.style.opacity === "0") reveal(el, index);
+      });
+    }, 2500);
     return () => {
       observer.disconnect();
+      window.clearTimeout(fallback);
       blocks.forEach((el) => {
         el.style.opacity = "";
         el.style.transform = "";

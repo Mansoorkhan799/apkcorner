@@ -30,7 +30,8 @@ export function fixContentUrls(html: string, origin: string): string {
   if (!origin) return html;
 
   return html
-    .replace(/src="\/wp-content/g, `src="${origin}/wp-content`)
-    .replace(/href="\/wp-content/g, `href="${origin}/wp-content`)
-    .replace(/srcset="\/wp-content/g, `srcset="${origin}/wp-content`);
+    .replace(/(src|href|srcset)="\/wp-content/g, `$1="${origin}/wp-content`)
+    .replace(/(src|href|srcset)='\/wp-content/g, `$1='${origin}/wp-content`)
+    .replace(/url\(\/wp-content/g, `url(${origin}/wp-content`)
+    .replace(/,\/wp-content/g, `,${origin}/wp-content`);
 }
