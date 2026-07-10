@@ -121,3 +121,51 @@ add_action('transition_post_status', function ($new_status, $old_status, $post) 
 add_action('deleted_post', function () {
     apkcorner_send_revalidate([]);
 });
+
+// ─── 4. Redirect public WP frontend → apkcorner.com.pk ──────────────────────
+// Keep admin, REST API, and media on AMS; send HTML pages to the Next.js site.
+
+add_action('template_redirect', function () {
+    if (is_admin() || wp_doing_ajax() || wp_doing_cron()) {
+        return;
+    }
+    if (defined('REST_REQUEST') && REST_REQUEST) {
+        return;
+    }
+
+    $uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '/';
+
+    if (preg_match('#^/(wp-admin|wp-login\.php|wp-json|wp-cron\.php|xmlrpc\.php|wp-content|wp-includes)#i', $uri)) {
+        return;
+    }
+
+    wp_redirect('https://apkcorner.com.pk' . $uri, 301);
+    exit;
+});
+
+// ─── 5. Block AMS from Google indexing ──────────────────────────────────────
+// WordPress on ams.apkcorner.com.pk is CMS-only; public SEO lives on apkcorner.com.pk.
+
+add_filter('pre_option_blog_public', '__return_zero');
+
+add_action('send_headers', function () {
+    if (is_admin()) {
+        return;
+    }
+    header('X-Robots-Tag: noindex, nofollow', true);
+});
+
+add_action('wp_head', function () {
+    echo '<meta name="robots" content="noindex, nofollow">' . "\n";
+}, 1);
+
+add_filter('robots_txt', function () {
+    return "User-agent: *\nDisallow: /\n";
+}, 99);
+
+add_filter('rank_math/frontend/robots', function () {
+    return [
+        'index'  => 'noindex',
+        'follow' => 'nofollow',
+    ];
+});
