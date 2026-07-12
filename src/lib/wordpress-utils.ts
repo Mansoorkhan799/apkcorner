@@ -1,10 +1,6 @@
 import type { WPCategory, WPPost } from "@/types/wordpress";
 
-export function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, "").trim();
-}
-
-/** Decode common HTML entities left after stripHtml (e.g. &#8230; → …). */
+/** Decode common HTML entities (e.g. &amp; → &, &#8230; → …). */
 export function decodeHtmlEntities(text: string): string {
   return text
     .replace(/&#(\d+);/g, (_, n: string) =>
@@ -15,11 +11,17 @@ export function decodeHtmlEntities(text: string): string {
     )
     .replace(/&hellip;/g, "…")
     .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
     .replace(/&lt;/g, "<")
     .replace(/&gt;/g, ">")
     .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'");
+    .replace(/&apos;/g, "'")
+    // &amp; last so sequences like &amp;lt; decode correctly
+    .replace(/&amp;/g, "&");
+}
+
+/** Strip HTML tags and decode entities from WordPress rendered fields. */
+export function stripHtml(html: string): string {
+  return decodeHtmlEntities(html.replace(/<[^>]*>/g, "")).trim();
 }
 
 /**
@@ -27,7 +29,7 @@ export function decodeHtmlEntities(text: string): string {
  * trailing sentence (e.g. "… attractions of CX777 is…").
  */
 export function cleanExcerpt(html: string): string {
-  let text = decodeHtmlEntities(stripHtml(html)).replace(/\s+/g, " ").trim();
+  let text = stripHtml(html).replace(/\s+/g, " ").trim();
   if (!text) return "";
 
   const hadEllipsis = /…$/.test(text) || /\.\.\.$/.test(text);
