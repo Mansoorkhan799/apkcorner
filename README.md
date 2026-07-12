@@ -29,6 +29,19 @@ Open [http://localhost:3000](http://localhost:3000) to preview the site.
 
 WordPress theme files live in `wordpress/kadence-child-teenpatti/`. The standalone setup snippet is in `wordpress/apkcorner-headless.php`.
 
+### Permanent AMS SEO lock (required on live CMS)
+
+Child-theme code alone is easy to lose (theme switch / cache). Use the **must-use plugin** instead:
+
+1. On AMS hosting, create `wp-content/mu-plugins/` if missing
+2. Upload `wordpress/mu-plugins/apkcorner-ams-seo.php` into that folder
+3. Purge LiteSpeed (and Cloudflare) cache
+4. Confirm:
+   - `curl -sI https://ams.apkcorner.com.pk/any-post/` → **301** to `https://apkcorner.com.pk/...`
+   - `curl -s https://ams.apkcorner.com.pk/robots.txt` → `Disallow: /`
+
+Optional ironclad layer: Cloudflare redirect rules — see `wordpress/mu-plugins/CLOUDFLARE-REDIRECT.txt`.
+
 ## Deploy
 
 Build for production:

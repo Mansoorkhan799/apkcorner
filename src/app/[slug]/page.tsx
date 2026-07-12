@@ -4,10 +4,12 @@ import SiteLayout from "@/components/SiteLayout";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import WordPressContent from "@/components/WordPressContent";
 import AnimatedPostHero from "@/components/AnimatedPostHero";
+import PostRating from "@/components/PostRating";
 import JsonLd from "@/components/JsonLd";
 import FadeIn from "@/components/motion/FadeIn";
 import { buildPostMetadata, getSiteName } from "@/lib/seo";
 import { buildPostSchemaGraph } from "@/lib/schema/builders";
+import { getPostRating } from "@/lib/rating";
 import {
   getAllPostSlugs,
   getFeaturedImage,
@@ -61,6 +63,7 @@ export default async function PostPage({ params }: PageProps) {
   const categories = getPostCategories(post);
   const postTitle = stripHtml(post.title.rendered);
   const excerpt = cleanExcerpt(post.excerpt.rendered);
+  const rating = getPostRating(post);
 
   const breadcrumbs = [
     { label: getSiteName(), href: "/" },
@@ -93,6 +96,10 @@ export default async function PostPage({ params }: PageProps) {
             skipLeadingH1
             excerpt={excerpt || undefined}
           />
+        </FadeIn>
+
+        <FadeIn delay={0.16}>
+          <PostRating value={rating.value} count={rating.count} />
         </FadeIn>
       </article>
     </SiteLayout>

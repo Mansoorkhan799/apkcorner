@@ -14,6 +14,7 @@ import {
 } from "./constants";
 import { cleanExcerpt, getFeaturedImage, stripHtml } from "@/lib/wordpress-utils";
 import { getSiteDescription, getSiteName, getSiteUrl } from "@/lib/seo";
+import { getPostRating } from "@/lib/rating";
 
 type JsonLdObject = Record<string, unknown>;
 
@@ -184,7 +185,8 @@ export function buildSoftwareApplicationSchema(
   pageUrl: string,
   title: string,
   description: string,
-  imageUrl?: string
+  imageUrl?: string,
+  rating?: { value: number; count: number }
 ): JsonLdObject {
   return {
     "@type": "SoftwareApplication",
@@ -201,6 +203,44 @@ export function buildSoftwareApplicationSchema(
     description,
     url: pageUrl,
     ...(imageUrl && { image: imageUrl, screenshot: imageUrl }),
+    ...(rating && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: rating.value,
+        bestRating: 5,
+        worstRating: 1,
+        ratingCount: rating.count,
+      },
+    }),
+  };
+}
+
+export function buildEditorialReviewSchema(
+  pageUrl: string,
+  title: string,
+  description: string,
+  ratingValue: number
+): JsonLdObject {
+  return {
+    "@type": "Review",
+    "@id": `${pageUrl}#review`,
+    itemReviewed: {
+      "@type": "SoftwareApplication",
+      "@id": `${pageUrl}#software`,
+      name: title.replace(/\s*(apk|download|202\d)\s*/gi, " ").trim() || title,
+    },
+    author: {
+      "@type": "Organization",
+      "@id": `${siteOrigin()}/#organization`,
+      name: getSiteName(),
+    },
+    reviewBody: description,
+    reviewRating: {
+      "@type": "Rating",
+      ratingValue,
+      bestRating: 5,
+      worstRating: 1,
+    },
   };
 }
 
@@ -280,6 +320,9 @@ export function buildPostSchemaGraph(
   const howToSteps = extractHowToSteps(post.content.rendered);
   const faqItems = extractFaqItems(post.content.rendered);
   const featured = getFeaturedImage(post);
+  const rating = getPostRating(post);
+  const includeSoftware =
+    detectedTypes.includes("software") || /\bapk\b/i.test(title);
 
   if (
     (detectedTypes.includes("howto") || howToSteps.length >= 2) &&
@@ -292,14 +335,18 @@ export function buildPostSchemaGraph(
     graph.push(buildFaqSchema(pageUrl, faqItems));
   }
 
-  if (detectedTypes.includes("software") || /\bapk\b/i.test(title)) {
+  if (includeSoftware) {
     graph.push(
       buildSoftwareApplicationSchema(
         pageUrl,
         title,
         description,
-        featured?.url
+        featured?.url,
+        { value: rating.value, count: rating.count }
       )
+    );
+    graph.push(
+      buildEditorialReviewSchema(pageUrl, title, description, rating.value)
     );
   }
 
