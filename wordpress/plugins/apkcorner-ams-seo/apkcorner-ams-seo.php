@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: APK Corner — AMS SEO Lock
- * Description: Redirects public AMS pages to apkcorner.com.pk, forces noindex, and blocks AMS robots/sitemaps. Keep /wp-admin, /wp-json, and media on AMS.
- * Version: 1.0.0
+ * Description: Redirects public AMS pages to apkcorner.com.pk, forces noindex, blocks AMS sitemaps, and revalidates the Next.js site on publish/update.
+ * Version: 1.1.0
  * Author: APK Corner
  * Requires at least: 5.8
  * Requires PHP: 7.4
@@ -88,3 +88,63 @@ add_action('template_redirect', function () {
         exit;
     }
 }, 1);
+
+// ─── 6. Revalidate Next.js whenever a post is published/updated ─────────────
+// Lives in this plugin so cache clears even if the child theme is missing.
+
+if (!defined('APKCORNER_REVALIDATE_URL')) {
+    define('APKCORNER_REVALIDATE_URL', 'https://apkcorner.com.pk/api/revalidate');
+}
+if (!defined('APKCORNER_REVALIDATE_SECRET')) {
+    define('APKCORNER_REVALIDATE_SECRET', 'be22531463ffb475f1db5710bf51a7110e26117b8fb004c0');
+}
+
+function apkcorner_ams_send_revalidate($payload = []) {
+    $response = wp_remote_post(
+        add_query_arg('secret', APKCORNER_REVALIDATE_SECRET, APKCORNER_REVALIDATE_URL),
+        [
+            'timeout'  => 15,
+            'blocking' => false,
+            'headers'  => ['Content-Type' => 'application/json'],
+            'body'     => wp_json_encode($payload),
+        ]
+    );
+
+    if (is_wp_error($response)) {
+        error_log('APK Corner revalidate failed: ' . $response->get_error_message());
+    }
+}
+
+function apkcorner_ams_revalidate_nextjs($post_id, $post) {
+    if (wp_is_post_revision($post_id) || $post->post_status !== 'publish') {
+        return;
+    }
+    if (!in_array($post->post_type, ['post', 'page'], true)) {
+        return;
+    }
+
+    $categories = [];
+    if ($post->post_type === 'post') {
+        $terms = get_the_terms($post_id, 'category');
+        if (is_array($terms)) {
+            foreach ($terms as $term) {
+                $categories[] = $term->slug;
+            }
+        }
+    }
+
+    apkcorner_ams_send_revalidate([
+        'slug'       => $post->post_name,
+        'categories' => $categories,
+    ]);
+}
+
+add_action('save_post', 'apkcorner_ams_revalidate_nextjs', 20, 2);
+add_action('transition_post_status', function ($new_status, $old_status, $post) {
+    if ($new_status === 'publish' && $old_status !== 'publish' && $post instanceof WP_Post) {
+        apkcorner_ams_revalidate_nextjs($post->ID, $post);
+    }
+}, 20, 3);
+add_action('deleted_post', function () {
+    apkcorner_ams_send_revalidate([]);
+});
