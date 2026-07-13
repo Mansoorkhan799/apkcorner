@@ -351,7 +351,12 @@ body {
   margin-bottom: 1.5em;
 }
 
-/* Kadence palette fallbacks (theme CSS is not loaded headless) */
+/*
+ * Kadence global palette fallbacks.
+ * WP button CSS uses var(--global-paletteN) from the theme. Without these
+ * values headless, backgrounds become invalid and buttons look like plain text.
+ * Palette 14/15 match the orange CTAs used in Kadence on AMS.
+ */
 .wp-content.entry-content {
   --global-palette1: #2b2b2b;
   --global-palette2: #54595f;
@@ -361,23 +366,30 @@ body {
   --global-palette6: #c8d4c8;
   --global-palette7: #ffffff;
   --global-palette8: #f5f5f5;
-  --global-palette9: #111111;
-  /* Common Kadence button accent — matches WP “orange” CTA when palette15 is used */
+  --global-palette9: #ffffff;
+  --global-palette10: #ea580c;
+  --global-palette11: #f97316;
+  --global-palette12: #fb923c;
+  --global-palette13: #fdba74;
+  --global-palette14: #f97316;
   --global-palette15: #f97316;
   --global-kb-gap-xs: 0.5rem;
 }
 
-/* Kadence Advanced Button — layout only; colors come from WP/Kadence inline CSS */
+/* Kadence Advanced Button */
 .wp-content.entry-content .wp-block-kadence-advancedbtn.kb-buttons-wrap {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   justify-content: center;
   align-items: center;
+  margin-top: 1.25em;
+  margin-bottom: 1.25em;
 }
 
 .wp-content.entry-content a.kb-button,
 .wp-content.entry-content a.kt-button {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -391,33 +403,47 @@ body {
   line-height: 1.2;
   text-decoration: none !important;
   text-align: center;
+  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.28);
   transition:
     filter 0.2s ease,
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
 
-/* Filled Kadence buttons default to white label (theme color CSS is missing headless) */
+/*
+ * Solid fallback when Kadence inline gradient uses an undefined palette var.
+ * WP/Kadence !important gradients still win when their CSS vars resolve.
+ */
 .wp-content.entry-content a.kb-button.kb-btn-global-fill,
 .wp-content.entry-content a.kt-button.kb-btn-global-fill {
-  color: #ffffff;
+  color: #ffffff !important;
+  background-color: var(--global-palette14, #f97316);
+  background-image: linear-gradient(
+    135deg,
+    var(--global-palette14, #f97316) 0%,
+    var(--global-palette14, #f97316) 100%
+  );
 }
 
 .wp-content.entry-content a.kb-button:hover,
 .wp-content.entry-content a.kt-button:hover {
   filter: brightness(1.06);
   transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(249, 115, 22, 0.36);
 }
 
-/* Kill Kadence gradient text (palette vars often missing → invisible labels) */
+/*
+ * Kadence gradient text often sets -webkit-text-fill-color: transparent with
+ * palette vars — kill that so the label stays visible on the filled button.
+ */
 .wp-content.entry-content a.kb-button .kt-btn-inner-text,
 .wp-content.entry-content a.kt-button .kt-btn-inner-text {
   background: none !important;
   background-image: none !important;
   -webkit-background-clip: border-box !important;
   background-clip: border-box !important;
-  -webkit-text-fill-color: currentColor !important;
-  color: inherit !important;
+  -webkit-text-fill-color: #ffffff !important;
+  color: #ffffff !important;
 }
 
 .wp-content.entry-content .kb-svg-icon-wrap {
@@ -426,6 +452,7 @@ body {
   justify-content: center;
   flex-shrink: 0;
   line-height: 0;
+  color: inherit;
 }
 
 .wp-content.entry-content .kb-svg-icon-wrap svg {
@@ -434,6 +461,7 @@ body {
   max-width: 1.25rem;
   max-height: 1.25rem;
   display: block;
+  stroke: currentColor;
 }
 
 .wp-content.entry-content a.kb-button.kt-btn-size-small {

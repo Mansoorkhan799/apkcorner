@@ -77,19 +77,19 @@ export default async function HomePage() {
         : Promise.resolve([]),
     ]);
 
-    teenPattiPosts = teenPatti.slice(0, 6);
-    earningGamesPosts = earningGames.slice(0, 6);
+    teenPattiPosts = teenPatti.slice(0, 1);
+    earningGamesPosts = earningGames.slice(0, 1);
 
     // Fallback: if category queries returned nothing, still show latest posts
     if (teenPattiPosts.length === 0 && earningGamesPosts.length === 0) {
-      const latest = await getPosts({ per_page: 6 });
-      earningGamesPosts = latest.slice(0, 6);
+      const latest = await getPosts({ per_page: 1 });
+      earningGamesPosts = latest.slice(0, 1);
     }
   } catch (error) {
     console.error("[homepage] WordPress fetch failed:", error);
     try {
-      const latest = await getPosts({ per_page: 6 });
-      earningGamesPosts = latest.slice(0, 6);
+      const latest = await getPosts({ per_page: 1 });
+      earningGamesPosts = latest.slice(0, 1);
       wpConnected = latest.length > 0;
     } catch (fallbackError) {
       console.error("[homepage] WordPress fallback failed:", fallbackError);
