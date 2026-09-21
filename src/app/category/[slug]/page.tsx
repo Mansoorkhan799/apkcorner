@@ -40,11 +40,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   try {
     const category = await getCategoryBySlug(slug);
     if (!category) return {};
-    return buildSiteMetadata(
-      category.name,
-      category.description || `Posts in ${category.name}`,
-      `/category/${slug}`
-    );
+    return {
+      ...buildSiteMetadata(
+        category.name,
+        category.description || `Posts in ${category.name}`,
+        `/category/${slug}`
+      ),
+      // Listing pages repeat every post excerpt, so Google was ranking
+      // /category/new-earning-games for queries like "mf7777 game"
+      // instead of the actual post URL and Rank Math title.
+      robots: { index: false, follow: true },
+    };
   } catch {
     return {};
   }

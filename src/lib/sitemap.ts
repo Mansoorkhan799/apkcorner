@@ -2,7 +2,6 @@ import { getSiteUrl } from "@/lib/seo";
 import {
   getAllPostSlugs,
   getAllPostsWithMedia,
-  getCategories,
 } from "@/lib/wordpress";
 import { getFeaturedImage } from "@/lib/wordpress-utils";
 
@@ -94,10 +93,7 @@ export async function buildPagesSitemapEntries() {
   ];
 
   try {
-    const [slugs, categories] = await Promise.all([
-      getAllPostSlugs(),
-      getCategories(),
-    ]);
+    const slugs = await getAllPostSlugs();
 
     const postRoutes = slugs.map((slug) => ({
       loc: `${siteUrl}/${slug}`,
@@ -106,16 +102,7 @@ export async function buildPagesSitemapEntries() {
       priority: "0.8",
     }));
 
-    const categoryRoutes = categories
-      .filter((cat) => cat.slug !== "uncategorized")
-      .map((cat) => ({
-        loc: `${siteUrl}/category/${cat.slug}`,
-        lastmod: now,
-        changefreq: "weekly",
-        priority: "0.6",
-      }));
-
-    return [...staticRoutes, ...postRoutes, ...categoryRoutes];
+    return [...staticRoutes, ...postRoutes];
   } catch {
     return staticRoutes;
   }
