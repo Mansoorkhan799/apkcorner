@@ -1,9 +1,7 @@
 import type { WPCategory, WPPost } from "@/types/wordpress";
 import {
   fixContentUrls as fixContentUrlsWithOrigin,
-  getFeaturedImage,
-  getPostCategories,
-  stripHtml,
+  rewriteWordPressPermalinkHrefs,
 } from "@/lib/wordpress-utils";
 
 export {
@@ -54,8 +52,18 @@ export function getWordPressOrigin(): string {
   }
 }
 
+const PUBLIC_SITE_ORIGIN = (
+  process.env.NEXT_PUBLIC_SITE_URL || "https://apkcorner.com.pk"
+).replace(/\/$/, "");
+
 export function fixContentUrls(html: string): string {
-  return fixContentUrlsWithOrigin(html, getWordPressOrigin());
+  const wpOrigin = getWordPressOrigin();
+  const withMedia = fixContentUrlsWithOrigin(html, wpOrigin);
+  return rewriteWordPressPermalinkHrefs(
+    withMedia,
+    wpOrigin,
+    PUBLIC_SITE_ORIGIN
+  );
 }
 
 export async function getPosts(

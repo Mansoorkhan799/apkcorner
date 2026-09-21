@@ -67,7 +67,7 @@ export default async function PostPage({ params }: PageProps) {
 
   const breadcrumbs = [
     { label: getSiteName(), href: "/" },
-    { label: "Guides", href: "/blog" },
+    { label: "Blog", href: "/blog" },
     { label: postTitle },
   ];
 

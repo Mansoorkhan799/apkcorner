@@ -66,6 +66,41 @@ export function getPostCategories(post: WPPost): WPCategory[] {
   return post._embedded?.["wp:term"]?.[0] ?? [];
 }
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/**
+ * Convert CMS and public-site permalinks to same-origin paths so Gutenberg
+ * internal links stay on the Next.js site. Media/admin URLs stay on WordPress.
+ */
+export function rewriteWordPressPermalinkHrefs(
+  html: string,
+  wpOrigin: string,
+  siteOrigin: string
+): string {
+  if (!html) return html;
+
+  const keepOnCms = /^\/(wp-content|wp-json|wp-admin|wp-includes|wp-login\.php)/i;
+
+  const toRelative = (source: string, preserveCmsPaths: boolean) => {
+    const from = source.replace(/\/$/, "");
+    if (!from) return;
+    html = html.replace(
+      new RegExp(`(href=)(["'])${escapeRegExp(from)}([^"']*)\\2`, "gi"),
+      (full, attr: string, quote: string, path: string) => {
+        if (preserveCmsPaths && keepOnCms.test(path)) return full;
+        const relative = path.startsWith("/") ? path : `/${path}`;
+        return `${attr}${quote}${relative}${quote}`;
+      }
+    );
+  };
+
+  toRelative(wpOrigin, true);
+  toRelative(siteOrigin, false);
+  return html;
+}
+
 /** Rewrite relative WordPress URLs in content to absolute URLs */
 export function fixContentUrls(html: string, origin: string): string {
   if (!origin) return html;

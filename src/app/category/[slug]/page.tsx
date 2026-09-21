@@ -61,7 +61,7 @@ export default async function CategoryPage({ params }: PageProps) {
   const pageUrl = `${getSiteUrl().replace(/\/$/, "")}/category/${slug}`;
   const breadcrumbs = [
     { label: getSiteName(), href: "/" },
-    { label: "Guides", href: "/blog" },
+    { label: "Blog", href: "/blog" },
     { label: category.name },
   ];
 

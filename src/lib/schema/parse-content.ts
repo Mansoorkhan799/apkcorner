@@ -28,6 +28,10 @@ export function stripLeadingH1(html: string): string {
 /**
  * Drop the first body paragraph when it duplicates the hero excerpt
  * (WordPress often repeats the intro under the download button).
+ *
+ * Never strip that paragraph if it contains links. Editors add internal
+ * links in the intro, and removing it dropped those <a> tags from the
+ * live Next.js site while they still existed in WordPress.
  */
 export function stripLeadingParagraphMatchingExcerpt(
   html: string,
@@ -39,6 +43,10 @@ export function stripLeadingParagraphMatchingExcerpt(
   const $ = cheerio.load(html, null, false);
   const firstP = $("p").first();
   if (!firstP.length) return html;
+
+  if (firstP.find("a[href]").length > 0) {
+    return html;
+  }
 
   const paragraphNorm = cleanText(firstP.text()).toLowerCase();
   if (paragraphNorm.length < 40) return html;

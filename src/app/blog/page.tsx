@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SiteLayout from "@/components/SiteLayout";
 import AnimatedPostGrid from "@/components/AnimatedPostGrid";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import JsonLd from "@/components/JsonLd";
 import FadeIn from "@/components/motion/FadeIn";
 import { buildSiteMetadata, getSiteName, getSiteUrl } from "@/lib/seo";
@@ -31,7 +32,7 @@ export default async function BlogPage() {
   const pageUrl = `${getSiteUrl().replace(/\/$/, "")}/blog`;
   const breadcrumbs = [
     { label: getSiteName(), href: "/" },
-    { label: "Guides" },
+    { label: "Blog" },
   ];
 
   const schemaGraph = {
@@ -52,6 +53,7 @@ export default async function BlogPage() {
       <JsonLd data={schemaGraph} />
       <div className="mx-auto max-w-5xl px-5 py-10 sm:px-6 sm:py-12">
         <FadeIn>
+          <Breadcrumbs items={breadcrumbs} />
           <h1 className="text-3xl font-bold tracking-tight text-white">All Guides</h1>
           <p className="mt-2 text-body">
             APK downloads, earning tips, and in-depth app reviews for Pakistan.
